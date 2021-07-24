@@ -33,6 +33,7 @@ const UserSchema = new Schema({
     type: String,
     // required: true,
     default: '../../public/avatar/default.png'
+    //default: '../../public/upload/win.jpg'
   },
   superiorname: {
     type: String

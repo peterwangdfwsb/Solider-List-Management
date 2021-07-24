@@ -7,7 +7,7 @@ import {
   setUserList
 } from '../redux/action-creators/users';
 import { setAlert } from '../redux/action-creators/alert';
-import { Loading, Alert } from './utils';
+import { Loading, Alert } from './load';
 import axios from 'axios';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -57,7 +57,9 @@ const CreateUser = ({
 
   const [userData, setUserData] = useState({
     avatar:
-      'https://s.yimg.com/aah/priorservice/us-army-new-logo-magnet-15.gif',
+      //'https://s.yimg.com/aah/priorservice/us-army-new-logo-magnet-15.gif',
+      'https://www.linkpicture.com/q/下載_2.png',
+
     name: '',
     sex: '',
     rank: '',
@@ -231,7 +233,9 @@ const CreateUser = ({
                 <div className={classes.buttons}>
                   <img
                     className={classes.badge}
-                    src='https://s.yimg.com/aah/priorservice/us-army-new-logo-magnet-15.gif'
+                    //src='https://s.yimg.com/aah/priorservice/us-army-new-logo-magnet-15.gif'
+                    //src='https://www.linkpicture.com/q/下載_2.png'
+                    src='https://www.linkpicture.com/q/depositphotos_103266082-stock-illustration-us-army-emblem-flag-of.jpeg'
                   />
                   <Typography
                     className={classes.formName}
@@ -305,7 +309,7 @@ const CreateUser = ({
                           className={classes.button}
                           onClick={handleSelectRef}
                         >
-                          Pick Avatar
+                          Choose
                         </Button>
                         {/* <label htmlFor='raised-button-file'> */}
                         <Button

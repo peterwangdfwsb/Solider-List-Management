@@ -14,7 +14,7 @@ import {
   getSuperior,
   getSubordinates
 } from '../redux/action-creators/users';
-import { Loading, Alert } from './utils';
+import { Loading, Alert } from './load';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from 'axios';
 
@@ -73,13 +73,7 @@ const Home = ({
     setUserList(config);
   };
 
-  console.log(pageNumber, ' HERE');
-
   useEffect(() => {
-    //initUser();
-    //initEdit();
-    //loadNextPage(config, users);
-    //setUserList(config);
     resetConfig();
   }, []);
 
@@ -215,14 +209,6 @@ const Home = ({
     <div className={classes.root}>
       <AppBar position='static'>
         <Toolbar>
-          {/* <IconButton
-            edge='start'
-            className={classes.menuButton}
-            color='inherit'
-            aria-label='open drawer'
-          >
-            <MenuIcon />
-          </IconButton> */}
           <Typography className={classes.title} variant='h6' noWrap>
             US Army Personnel Registry
           </Typography>
@@ -252,11 +238,13 @@ const Home = ({
           </Button>
           <Fab
             color='secondary'
+            //color='#ff9100'
             aria-label='add'
             className={classes.fab}
             onClick={e => handleCreate()}
           >
-            <AddIcon />
+            Add
+            {/*<AddIcon />*/}
           </Fab>
         </Toolbar>
       </AppBar>
