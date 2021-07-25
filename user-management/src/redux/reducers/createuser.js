@@ -1,13 +1,4 @@
 const initState = {
-  // avatar: '',
-  // name: '',
-  // sex: '',
-  // rank: '',
-  // startdate: '',
-  // phone: '',
-  // email: '',
-  // superior: '',
-  // superiorname: '',
   error: null,
   isLoading: false,
   createSuccess: false
@@ -23,13 +14,12 @@ const createUser = (state = initState, action) => {
         ...state,
         isLoading: false,
         createSuccess: true,
-        error: null // need this? or just in init?
+        error: null 
       };
     case 'CREATE_USER_ERROR':
       return { ...state, ...payload, isLoading: false };
     case 'INIT_USER':
       return { ...state, ...payload, error: null };
-    // incase fail and back with no success
     default:
       return state;
   }

@@ -16,9 +16,6 @@ const UserSchema = new Schema({
     required: true
   },
   startdate: {
-    //type: Date,
-    // required: true,
-    //default: Date.now
     type: String
   },
   phone: {
@@ -31,16 +28,12 @@ const UserSchema = new Schema({
   },
   avatar: {
     type: String,
-    // required: true,
-    default: '../../public/avatar/default.png'
-    //default: '../../public/upload/win.jpg'
   },
   superiorname: {
     type: String
   },
   superior: {
     type: Schema.Types.ObjectId
-    // ref: 'users'
   },
   directsubordinates: [Schema.Types.ObjectId]
 });
@@ -101,20 +94,12 @@ const getUsers = async params => {
     { superiorname: -1 } // 14
   ];
   const options = {
-    // select: '',
-    sort: sortOrder[sortType], // obj e.g. { name: -1 }
-    // populate: '',
-    lean: true, // return JSON not doc
-    // offset: 20,
+    sort: sortOrder[sortType], 
+    lean: true,
     page: pageNumber,
     limit: pageSize
   };
   let flow = User.paginate(query, options);
-  // if (params.page && params.pageSize) {
-  //   //   flow.select(DEFAULT_PROJECTION);
-  //   flow.skip(params.page * params.pageSize);
-  //   flow.limit(params.pageSize);
-  // }
   return await flow.catch(err => {
     console.log(err);
     throw new Error('error getting users from db');
@@ -182,7 +167,6 @@ const deleteUserSubordinates = async (userId, dsId) => {
       $pull: {
         directsubordinates: dsId
       }
-      // { $pull: { array: { $in: [ "a", "b" ] } } delete many
     },
     { new: true }
   ).catch(err => {
@@ -203,7 +187,6 @@ const deleteUserSuperior = async supId => {
 };
 
 const deleteUserById = async userId => {
-  // cannot add {new: true}, why?
   return await User.findByIdAndDelete({ _id: userId }).catch(err => {
     console.log(err);
     throw new Error(`error deleting user by id: ${userId}`);
@@ -212,8 +195,6 @@ const deleteUserById = async userId => {
 
 const updateUserById = async (userId, userData) => {
   if (userData.superior === '' || userData.superiorname === '') {
-    // if you don't pass sth, it may send an empty string
-    // while id is not a simple string
     userData.superior = null;
     userData.superiorname = null;
   }
@@ -254,7 +235,6 @@ const getSubordinates = async userId => {
   try {
     let rs = await getUserById(userId);
     let rsArr = rs.directsubordinates;
-    // let rs = await getUserById(userId).directsubordinates;
     if (rs.directsubordinates.length === 0) return [];
     for (let i = 0; i < rs.length; i++) {
       let ds = await getSubordinates(rs[i]);

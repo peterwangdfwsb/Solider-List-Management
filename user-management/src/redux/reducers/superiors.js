@@ -1,16 +1,7 @@
 const initState = {
-  // config: {
-  //   pageSize: 3,
-  //   pageNumber: 1,
-  //   sortType: 0,
-  //   searchText: '__NO_SEARCH_TEXT__',
-  //   superiorId: '__NO_SUPERIOR_ID__'
-  // },
-
   superiorList: [],
   error: null,
   isLoading: false
-  // lock: true
 };
 
 const superiors = (state = initState, action) => {

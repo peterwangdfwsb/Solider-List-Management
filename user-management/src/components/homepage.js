@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
 import {
   setUserList,
   loadNextPage,
@@ -36,7 +35,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
-const Home_test = ({
+const HomePage = ({
   users,
   setUserList,
   history,
@@ -50,7 +49,7 @@ const Home_test = ({
   getSuperior,
   getSubordinates
 }) => {
-  const { pageSize, pageNumber, sortType, searchText, superiorId } = config;
+  const { pageSize, pageNumber } = config;
   const [query, setQuery] = useState('');
   const handleSearch = e => {
     setQuery(e.target.value);
@@ -69,6 +68,7 @@ const Home_test = ({
   const handleEdit = id => {
     history.push(`/edituser/${id}`);
   };
+
 
   const handleDelete = (id, users) => {
     deleteUser(id, users);
@@ -123,23 +123,22 @@ const Home_test = ({
           </div>
           <Toolbar>
             <InputBase
-              placeholder='Search…'
+              placeholder='SEARCH…'
               type='search'
               value={query}
               onChange={e => {
                 handleSearch(e);
               }}
             />
-          <button
+          <Button
             onClick={resetConfig}
             >
-            Reset
-          </button>
-          <Link to={'/createuser'}>
-              <button>
-                  CREATE
-              </button>
-          </Link>
+            RESET
+          </Button>
+          <Button
+          onClick={handleCreate}>
+              CREATE
+          </Button>
         </Toolbar>
       </AppBar>
       <div>
@@ -160,11 +159,10 @@ const Home_test = ({
                   </p>
                 }
               >
-                {/*<Table className={classes.table} size='small'>*/}
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <StyledTableCell>Avatar</StyledTableCell>
+                      <StyledTableCell>Profile</StyledTableCell>
                       <StyledTableCell
                         align='right'
                         onClick={e => {
@@ -283,8 +281,7 @@ const Home_test = ({
                           {user.rank}
                         </StyledTableCell>
                         <StyledTableCell align='right'>
-                          {//user.startdate.slice(0, 10)
-                          user.startdate}
+                          {user.startdate}
                         </StyledTableCell>
                         <StyledTableCell align='right'>
                           <a href={'tel: ' + user.phone}>{user.phone}</a>
@@ -348,8 +345,6 @@ const mapStateToProps = state => {
     error: state.users.error,
     deleteError: state.users.deleteError,
     config: state.users.config,
-    alertContent: state.alert.alertContent
-    // lock: state.users.lock
   };
 };
 
@@ -371,4 +366,4 @@ const mapStateToDispatch = dispatch => {
 export default connect(
   mapStateToProps,
   mapStateToDispatch
-)(Home_test);
+)(HomePage);

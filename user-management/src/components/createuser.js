@@ -6,8 +6,8 @@ import {
   initUser,
   setUserList
 } from '../redux/action-creators/users';
-import { setAlert } from '../redux/action-creators/alert';
-import { Loading, Alert } from './load';
+//import { setAlert } from '../redux/action-creators/alert';
+import { Loading } from './load';
 import axios from 'axios';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,7 +15,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -24,21 +23,13 @@ import { FormLabel, InputLabel } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider
-} from '@material-ui/pickers';
 import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
 
 const CreateUser = ({
-  setAlert,
   createUser,
-  alertContent,
   history,
   createSuccess,
   isLoading,
-  error,
   setUserList,
   superiorList
 }) => {
@@ -57,7 +48,6 @@ const CreateUser = ({
 
   const [userData, setUserData] = useState({
     avatar:
-      //'https://s.yimg.com/aah/priorservice/us-army-new-logo-magnet-15.gif',
       'https://www.linkpicture.com/q/下載_2.png',
 
     name: '',
@@ -66,7 +56,7 @@ const CreateUser = ({
     startdate: '',
     phone: '',
     email: '',
-    superior: '' // Id
+    superior: '' 
   });
 
   const {
@@ -82,16 +72,6 @@ const CreateUser = ({
 
   const handleCreate = e => {
     e.preventDefault();
-    // console.log({
-    //   avatar,
-    //   name,
-    //   sex,
-    //   rank,
-    //   startdate,
-    //   phone,
-    //   email,
-    //   superior
-    // });
     createUser({
       avatar,
       name,
@@ -108,10 +88,6 @@ const CreateUser = ({
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  // const [avatar, setAvatar] = useState(
-  //   'https://s.yimg.com/aah/priorservice/us-army-new-logo-magnet-15.gif'
-  //   // 'http://localhost:5000/uploads/demo.jpg'
-  // );
 
   const handleBack = () => {
     history.push('/');
@@ -152,9 +128,6 @@ const CreateUser = ({
   const uploadEl = useRef(null);
 
   const useStyles = makeStyles(theme => ({
-    // appBar: {
-    //   position: 'relative',
-    // },
     layout: {
       width: 'auto',
       marginLeft: theme.spacing(2),
@@ -196,8 +169,6 @@ const CreateUser = ({
     },
     badge: {
       width: theme.spacing(5),
-      // height: '50%'
-      // (top, right, bottom, left)
       margin: theme.spacing(1, 1, 1, 0)
     },
     formName: {
@@ -227,14 +198,18 @@ const CreateUser = ({
         <Loading />
       ) : (
         <div>
-          <main className={classes.layout}>
-            <Paper className={classes.paper}>
+          <main 
+          className={classes.layout}
+          >
+            <Paper 
+            className={classes.paper}
+            >
               <form onSubmit={handleCreate}>
-                <div className={classes.buttons}>
+                <div 
+                className={classes.buttons}
+                >
                   <img
                     className={classes.badge}
-                    //src='https://s.yimg.com/aah/priorservice/us-army-new-logo-magnet-15.gif'
-                    //src='https://www.linkpicture.com/q/下載_2.png'
                     src='https://www.linkpicture.com/q/depositphotos_103266082-stock-illustration-us-army-emblem-flag-of.jpeg'
                   />
                   <Typography
@@ -244,10 +219,11 @@ const CreateUser = ({
                   >
                     New Soldier
                   </Typography>
-                  <div className={classes.fillSpace} />
+                  <div 
+                  className={classes.fillSpace} 
+                  />
 
                   <Button
-                    // display='inline'
                     variant='contained'
                     color='success'
                     onClick={handleBack}
@@ -269,11 +245,9 @@ const CreateUser = ({
                   <Grid item xs={12} md={6} lg={6}>
                     <div
                       className={classes.avatarHead}
-                      // variant='p'
-                      // gutterBottom
                       fullWidth
                     >
-                      Avatar
+                      Profile
                     </div>
                     <br />
                     <div className={classes.avatar}>
@@ -282,21 +256,16 @@ const CreateUser = ({
                         src={avatar}
                         id='avatar'
                         name='avatar-preview'
-                        // label='Avatar'
                         style={{ width: '100%', height: '100%' }}
-                        // fullWidth
                       />
                     </div>
 
                     <input
                       name='avatar-upload'
                       accept='image/*'
-                      // className={classes.input}
                       style={{ display: 'none' }}
-                      // value={avatar}
                       onChange={handleSelect}
                       ref={uploadEl}
-                      // id='raised-button-file'
                       multiple
                       type='file'
                     />
@@ -305,23 +274,21 @@ const CreateUser = ({
                         <Button
                           variant='contained'
                           color='primary'
-                          // component='span'
                           className={classes.button}
                           onClick={handleSelectRef}
                         >
                           Choose
                         </Button>
-                        {/* <label htmlFor='raised-button-file'> */}
+                        
                         <Button
                           variant='contained'
-                          color='secondary'
-                          // component='span'
+                          //color='secondary'
                           className={classes.button}
+                          //color='#40c4ff'
                           onClick={handleUpload}
                         >
                           Upload
                         </Button>
-                        {/* </label> */}
                       </div>
                     </div>
                   </Grid>
@@ -333,8 +300,6 @@ const CreateUser = ({
                       value={name}
                       onChange={handleChange}
                       label='Name'
-                      fullWidth
-                      autoComplete='name'
                     />
                     <FormControl fullWidth>
                       <InputLabel htmlFor='rank-native-helper'>Rank</InputLabel>
@@ -350,21 +315,6 @@ const CreateUser = ({
                         })}
                       </Select>
                     </FormControl>
-
-                    {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox color='secondary' name='male' value='Male' />
-                  }
-                  label='Male'
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox color='secondary' name='female' value='Female' />
-                  }
-                  label='Female'
-                />
-              </Grid> */}
 
                     <RadioGroup
                       name='sex'
@@ -390,26 +340,7 @@ const CreateUser = ({
                       value={startdate}
                       onChange={handleChange}
                       label='Start Date'
-                      fullWidth
-                      autoComplete='startdate'
                     />
-                    {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    margin='normal'
-                    id='date-picker-dialog'
-                    label='Start Date'
-                    format='MM/dd/yyyy'
-                    name='startdate'
-                    value={startdate}
-                    onChange={handleChange}
-                    // onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      // name: 'startdate',
-                      'aria-label': 'change date'
-                    }}
-                    fullWidth
-                  />
-                </MuiPickersUtilsProvider> */}
 
                     <TextField
                       required
@@ -418,8 +349,6 @@ const CreateUser = ({
                       value={phone}
                       onChange={handleChange}
                       label='Office Phone'
-                      fullWidth
-                      autoComplete='phone'
                     />
 
                     <TextField
@@ -429,8 +358,6 @@ const CreateUser = ({
                       value={email}
                       onChange={handleChange}
                       label='Email'
-                      fullWidth
-                      autoComplete='email'
                     />
 
                     <FormControl fullWidth>
@@ -469,7 +396,7 @@ const CreateUser = ({
 
 const mapStateToProps = state => {
   return {
-    alertContent: state.alert.alertContent,
+    //alertContent: state.alert.alertContent,
     createSuccess: state.createUser.createSuccess,
     isLoading: state.createUser.isLoading,
     error: state.createUser.error,
@@ -479,7 +406,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setAlert: alert => dispatch(setAlert(alert)),
+    //setAlert: alert => dispatch(setAlert(alert)),
     setUserList: config => dispatch(setUserList(config)),
     createUser: data => dispatch(createUser(data)),
     initUser: () => dispatch(initUser())

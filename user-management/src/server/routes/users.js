@@ -4,10 +4,6 @@ const UserModel = require('../models/user');
 const UserService = require('../services/user');
 const UserController = require('../controllers/user');
 
-// searchText, sortType, pageSize or limit, pageNumber or page/offset
-// params : mongoose paginate
-// For frontend, ban __NO_SEARCH_TEXT__ input as the invalid input
-
 router.get(
   '/:pageSize/:pageNumber/:sortType/:searchText/:superiorId',
   async (req, res) => {
@@ -26,7 +22,6 @@ router.get(
         superiorId: req.params.superiorId
       };
 
-      // UserModel
       const users = await UserModel.getUsers(query);
       res.status(200).json(users);
     } catch (err) {

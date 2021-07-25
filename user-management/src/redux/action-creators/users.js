@@ -8,18 +8,6 @@ const setUserListStart = () => {
 };
 
 const setUserListSuccess = (data, config) => {
-  // if (config !== null) {
-  //   console.log('IAM CONF: ', config);
-  //   return {
-  //     type: 'SET_USER_LIST_SUCCESS',
-  //     payload: { users: data, pageInfo, config }
-  //   };
-  // } else {
-  //   return {
-  //     type: 'SET_USER_LIST_SUCCESS',
-  //     payload: { users: data, pageInfo }
-  //   };
-  // }
   return {
     type: 'SET_USER_LIST_SUCCESS',
     payload: { users: data, config }
@@ -33,72 +21,34 @@ const setUserListError = err => {
   };
 };
 
-/*const noMoreUsers = () => {
-  return {
-    type: 'NO_MORE_USERS',
-    payload: { alertContent: 'No more soldiers!' }
-  };
-};*/
 
 export const setUserList = config => dispatch => {
   dispatch(setUserListStart());
   const { pageSize, pageNumber, sortType, searchText, superiorId } = config;
-  // console.log(config);
-  // console.log(pageNumber, searchText);
   axios
     .get(
       `http://localhost:5000/api/users/${pageSize}/${pageNumber}/${sortType}/${searchText}/${superiorId}`
     )
     .then(res => {
-      // console.log('success', res.data.docs);
-      // const pageInfo = {
-      //   hasPrevPage: res.data.hasPrevPage,
-      //   hasNextPage: res.data.hasNextPage,
-      //   prevPage: res.data.prevPage,
-      //   nextPage: res.data.nextPage
-      // };
       dispatch(setUserListSuccess(res.data.docs, config));
     })
     .catch(err => dispatch(setUserListError(err)));
 };
 
 export const loadNextPage = (config, users) => dispatch => {
-  // if (payload.users.length / payload.config.pageSize < payload.config.pageNumber - 1) {
-  //   dispatch(fixPageNumber);
-  //   return
-  // // }
-  // dispatch(setUserListStart());
   const { pageSize, pageNumber, sortType, searchText, superiorId } = config;
-  // console.log(config);
   axios
     .get(
       `http://localhost:5000/api/users/${pageSize}/${pageNumber}/${sortType}/${searchText}/${superiorId}`
     )
     .then(res => {
-      // console.log('success', res.data.docs);
-      // const pageInfo = {
-      //   hasPrevPage: res.data.hasPrevPage,
-      //   hasNextPage: res.data.hasNextPage,
-      //   prevPage: res.data.prevPage,
-      //   nextPage: res.data.nextPage
-      // };
-
-      // if (!res.data.hasNextPage) {
-      //   // dispatch(noMoreUsers());
-      //   throw new Error('No more soldiers');
-      // } else {
-      // setTimeout(() => {
       dispatch(setUserListSuccess(users.concat(res.data.docs), config));
-      // setUsers(fakeD);
-      // }, 1500);
-      // }
     })
     .catch(err => dispatch(setUserListError(err)));
 };
 
 export const resetConfig = () => dispatch => {
   dispatch(setUserListStart());
-  // Initialize Config
   const config = {
     pageSize: 10,
     pageNumber: 1,
@@ -106,8 +56,6 @@ export const resetConfig = () => dispatch => {
     searchText: '__NO_SEARCH_TEXT__',
     superiorId: '__NO_SUPERIOR_ID__'
   };
-  // console.log(config);
-  // console.log(pageNumber, searchText);
   axios
     .get(
       `http://localhost:5000/api/users/${config.pageSize}/${
@@ -115,18 +63,6 @@ export const resetConfig = () => dispatch => {
       }/${config.sortType}/${config.searchText}/${config.superiorId}`
     )
     .then(res => {
-      // console.log('WWsuccess', res.data.docs);
-      // console.log('WOW: ', config);
-      // config = {
-      //   ...config,
-      //   pageNumber: 2
-      // };
-      // const pageInfo = {
-      //   hasPrevPage: false,
-      //   hasNextPage: true,
-      //   prevPage: null,
-      //   nextPage: 2
-      // };
       config.pageNumber++;
       dispatch(setUserListSuccess(res.data.docs, config));
     })
@@ -136,7 +72,7 @@ export const resetConfig = () => dispatch => {
 const setSuperiorListStart = () => {
   return {
     type: 'SET_SUPERIOR_LIST_START',
-    payload: { error: null } // init
+    payload: { error: null } 
   };
 };
 
@@ -150,7 +86,7 @@ const setSuperiorListSuccess = users => {
 const setSuperiorListError = err => {
   return {
     type: 'SET_SUPERIOR_LIST_ERROR',
-    payload: { error: err } // init
+    payload: { error: err } 
   };
 };
 
@@ -165,7 +101,6 @@ export const setSuperiorList = id => dispatch => {
     .catch(err => dispatch(setSuperiorListError(err)));
 };
 
-// --------------
 
 const createUserStart = () => {
   return {
@@ -175,10 +110,8 @@ const createUserStart = () => {
 };
 
 const createUserSuccess = () => {
-  // data: user obj: {fn, ln, sex, age, pw}
   return {
     type: 'CREATE_USER_SUCCESS'
-    // payload: userData
   };
 };
 
@@ -189,23 +122,7 @@ const createUserError = err => {
   };
 };
 
-/*
-const config = {
-    pageSize: 10,
-    pageNumber: 1,
-    sortType: 0,
-    searchText: '__NO_SEARCH_TEXT__',
-    superiorId: '__NO_SUPERIOR_ID__'
-  };
-  // console.log(config);
-  // console.log(pageNumber, searchText);
-  axios
-    .get(
-      `http://localhost:5000/api/users/${config.pageSize}/${
-        config.pageNumber
-      }/${config.sortType}/${config.searchText}/${config.superiorId}`
-    )
-*/
+
 
 export const createUser = userData => dispatch => {
   dispatch(createUserStart());
@@ -218,45 +135,21 @@ export const createUser = userData => dispatch => {
     axios
       .get(`http://localhost:5000/api/users/${userData.superior}`)
       .then(res => {
-        // console.log(res.data);
-        // console.log(res.data.data.user.name);
         userData = { ...userData, superiorname: res.data.data.user.name };
         axios
           .post('http://localhost:5000/api/users', userData, config)
           .then(res => {
             dispatch(createUserSuccess());
-            //history.push('/');
-            /*const config_1 = {
-              pageSize: 10,
-              pageNumber: 1,
-              sortType: 0,
-              searchText: '__NO_SEARCH_TEXT__',
-              superiorId: '__NO_SUPERIOR_ID__'
-            };
-            axios
-            .get(
-              `http://localhost:5000/api/users/${config_1.pageSize}/${
-                config_1.pageNumber
-              }/${config_1.sortType}/${config_1.searchText}/${config_1.superiorId}`
-              )
-              .then(res => {
-                config_1.pageNumber++;
-                dispatch(setUserListSuccess(res.data.docs, config_1));
-              })
-              .catch(err => dispatch(setUserListError(err)));*/
-            //window.location.reload();
-          }) // res.data
+          })
           .catch(err => dispatch(createUserError(err)));
       })
       .catch(err => dispatch(createUserError(err)));
   } else {
-    // need clear superior?
     axios
       .post('http://localhost:5000/api/users', userData, config)
       .then(res => {
         dispatch(createUserSuccess());
-        //window.location.reload();
-      }) // res.data
+      }) 
       .catch(err => dispatch(createUserError(err)));
   }
 };
@@ -276,7 +169,6 @@ export const initUser = () => dispatch => {
   });
 };
 
-// ---------
 
 const editUserStart = () => {
   return {
@@ -286,10 +178,8 @@ const editUserStart = () => {
 };
 
 const editUserSuccess = () => {
-  // data: user obj: {fn, ln, sex, age, pw}
   return {
     type: 'EDIT_USER_SUCCESS'
-    // payload: userData
   };
 };
 
@@ -320,17 +210,11 @@ export const editUser = (
     axios
       .get(`http://localhost:5000/api/users/${userData.superior}`)
       .then(res => {
-        // console.log(res.data);
-        // console.log(res.data.data.user.name);
-
         userData = { ...userData, superiorname: res.data.data.user.name };
         axios
           .put(`http://localhost:5000/api/users/${id}`, userData, config)
           .then(res => {
-            dispatch(editUserSuccess()); // res.data
-
-            // other method:
-            //history.push('/');
+            dispatch(editUserSuccess()); 
             let {
               pageSize,
               pageNumber,
@@ -359,13 +243,6 @@ export const editUser = (
                 },
                 users
               )
-              // setUserListSuccess(users, {
-              //   pageSize,
-              //   pageNumber,
-              //   sortType,
-              //   searchText,
-              //   superiorId
-              // })
             );
             initEdit();
           })
@@ -377,13 +254,8 @@ export const editUser = (
     axios
       .put(`http://localhost:5000/api/users/${id}`, userData, config)
       .then(res => {
-        dispatch(editUserSuccess()); // res.data
+        dispatch(editUserSuccess()); 
 
-        
-
-
-        // other method:
-        //history.push('/');
         let {
           pageSize,
           pageNumber,
@@ -417,10 +289,8 @@ export const editUser = (
   }
 };
 
-// -------
 
 export const initEdit = () => dispatch => {
-  // console.log('init dispatch');
   dispatch({
     type: 'INIT_EDIT',
     payload: {
@@ -439,8 +309,6 @@ export const initEdit = () => dispatch => {
   });
 };
 
-// --------
-
 const deleteUserStart = () => {
   return {
     type: 'DELETE_USER_START',
@@ -449,7 +317,6 @@ const deleteUserStart = () => {
 };
 
 const deleteUserSuccess = users => {
-  // console.log(userData);
   return {
     type: 'DELETE_USER_SUCCESS',
     payload: users
@@ -469,25 +336,10 @@ export const deleteUser = (id, users) => dispatch => {
     .delete(`http://localhost:5000/api/users/${id}`)
     .then(() => {
       users = users.filter(user => user._id.toString() !== id.toString());
-      dispatch(deleteUserSuccess(users)); //might use if we need deleted id
-      // Reload this page
-      // How about it is the last row of page?
-      // const index = users.indexOf(user);
-
-      // if (users.length % config.pageSize === 1 && users.length > 1) {
-
-      // }
-      // config = { ...config, pageNumber: config.pageNumber - 1 };
-      // users = users.slice(
-      //   0,
-      //   Math.floor(users.length / config.pageSize) * config.pageSize
-      // );
-      // dispatch(setUserList(config));
+      dispatch(deleteUserSuccess(users)); 
     })
     .catch(err => dispatch(deleteUserError(err)));
 };
-
-// --------
 
 const getUserStart = () => {
   return {
@@ -497,7 +349,6 @@ const getUserStart = () => {
 };
 
 const getUserSuccess = userData => {
-  // console.log(userData);
   return {
     type: 'GET_USER_SUCCESS',
     payload: { user: userData }

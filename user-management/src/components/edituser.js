@@ -7,8 +7,7 @@ import {
   setSuperiorList
 } from '../redux/action-creators/users';
 import { getUser } from '../redux/action-creators/users';
-import { setAlert } from '../redux/action-creators/alert';
-import { Loading, Alert } from './load';
+import { Loading } from './load';
 import axios from 'axios';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,7 +15,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -24,18 +22,11 @@ import Radio from '@material-ui/core/Radio';
 import { FormLabel, InputLabel } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
-
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider
-} from '@material-ui/pickers';
 import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
+
 
 const EditUser = ({
-  setAlert,
   editUser,
-  alertContent,
   history,
   editSuccess,
   match,
@@ -43,9 +34,6 @@ const EditUser = ({
   isGetting,
   initEdit,
   getUser,
-  user,
-  error,
-  getError,
   setSuperiorList,
   superiorList,
   users,
@@ -61,7 +49,6 @@ const EditUser = ({
 
   const [userData, setUserData] = useState({
     avatar:
-      //'https://s.yimg.com/aah/priorservice/us-army-new-logo-magnet-15.gif',
       'https://www.linkpicture.com/q/下載_2.png',
     name: '',
     sex: '',
@@ -69,7 +56,7 @@ const EditUser = ({
     startdate: '',
     phone: '',
     email: '',
-    superior: '' // Id
+    superior: '' 
   });
 
   const {
@@ -89,17 +76,7 @@ const EditUser = ({
 
   const handleEdit = e => {
     e.preventDefault();
-    // console.log({
-    //   avatar,
-    //   name,
-    //   sex,
-    //   rank,
-    //   startdate,
-    //   phone,
-    //   email,
-    //   superior
-    // });
-
+    
     editUser(
       id,
       {
@@ -157,9 +134,6 @@ const EditUser = ({
   const uploadEl = useRef(null);
 
   const useStyles = makeStyles(theme => ({
-    // appBar: {
-    //   position: 'relative',
-    // },
     layout: {
       width: 'auto',
       marginLeft: theme.spacing(2),
@@ -201,8 +175,6 @@ const EditUser = ({
     },
     badge: {
       width: theme.spacing(5),
-      // height: '50%'
-      // (top, right, bottom, left)
       margin: theme.spacing(1, 1, 1, 0)
     },
     formName: {
@@ -238,8 +210,6 @@ const EditUser = ({
                 <div className={classes.buttons}>
                   <img
                     className={classes.badge}
-                    //src='https://s.yimg.com/aah/priorservice/us-army-new-logo-magnet-15.gif'
-                    src='https://www.linkpicture.com/q/下載_2.png'
                     src='https://www.linkpicture.com/q/depositphotos_103266082-stock-illustration-us-army-emblem-flag-of.jpeg'
                   />
                   <Typography
@@ -252,7 +222,6 @@ const EditUser = ({
                   <div className={classes.fillSpace} />
 
                   <Button
-                    // display='inline'
                     variant='contained'
                     color='success'
                     onClick={handleBack}
@@ -274,8 +243,6 @@ const EditUser = ({
                   <Grid item xs={12} md={6} lg={6}>
                     <div
                       className={classes.avatarHead}
-                      // variant='p'
-                      // gutterBottom
                       fullWidth
                     >
                       Avatar
@@ -287,21 +254,16 @@ const EditUser = ({
                         src={avatar}
                         id='avatar'
                         name='avatar-preview'
-                        // label='Avatar'
                         style={{ width: '100%', height: '100%' }}
-                        // fullWidth
                       />
                     </div>
 
                     <input
                       name='avatar-upload'
                       accept='image/*'
-                      // className={classes.input}
                       style={{ display: 'none' }}
-                      // value={avatar}
                       onChange={handleSelect}
                       ref={uploadEl}
-                      // id='raised-button-file'
                       multiple
                       type='file'
                     />
@@ -310,23 +272,18 @@ const EditUser = ({
                         <Button
                           variant='contained'
                           color='primary'
-                          // component='span'
                           className={classes.button}
                           onClick={handleSelectRef}
                         >
                           Choose
                         </Button>
-                        {/* <label htmlFor='raised-button-file'> */}
                         <Button
                           variant='contained'
-                          color='secondary'
-                          // component='span'
                           className={classes.button}
                           onClick={handleUpload}
                         >
                           Upload
                         </Button>
-                        {/* </label> */}
                       </div>
                     </div>
                   </Grid>
@@ -356,21 +313,6 @@ const EditUser = ({
                       </Select>
                     </FormControl>
 
-                    {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox color='secondary' name='male' value='Male' />
-                  }
-                  label='Male'
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox color='secondary' name='female' value='Female' />
-                  }
-                  label='Female'
-                />
-              </Grid> */}
-
                     <RadioGroup
                       name='sex'
                       aria-label='sex'
@@ -398,24 +340,7 @@ const EditUser = ({
                       fullWidth
                       autoComplete='startdate'
                     />
-                    {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    margin='normal'
-                    id='date-picker-dialog'
-                    label='Start Date'
-                    format='MM/dd/yyyy'
-                    name='startdate'
-                    value={startdate}
-                    onChange={handleChange}
-                    // onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      // name: 'startdate',
-                      'aria-label': 'change date'
-                    }}
-                    fullWidth
-                  />
-                </MuiPickersUtilsProvider> */}
-
+                    
                     <TextField
                       required
                       id='phone'
@@ -474,15 +399,13 @@ const EditUser = ({
 
 const mapStateToProps = state => {
   return {
-    alertContent: state.alert.alertContent,
     editSuccess: state.editUser.editSuccess,
     isLoading: state.editUser.isLoading,
     isGetting: state.getUser.isLoading,
     user: state.getUser.user,
-    // use this user in file check whether the file be changed in the very bottom
     error: state.editUser.error,
     getError: state.getUser.error,
-    superiorList: state.superiors.superiorList, // need change
+    superiorList: state.superiors.superiorList, 
     users: state.users.users,
     config: state.users.config
   };
@@ -490,7 +413,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setAlert: alert => dispatch(setAlert(alert)),
     editUser: (id, data, initEdit, users, config) =>
       dispatch(editUser(id, data, initEdit, users, config)),
     initEdit: () => dispatch(initEdit()),
