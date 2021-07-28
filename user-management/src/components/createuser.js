@@ -6,7 +6,6 @@ import {
   initUser,
   setUserList
 } from '../redux/action-creators/users';
-//import { setAlert } from '../redux/action-creators/alert';
 import { Loading } from './load';
 import axios from 'axios';
 
@@ -22,7 +21,6 @@ import Radio from '@material-ui/core/Radio';
 import { FormLabel, InputLabel } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
-
 import 'date-fns';
 
 const CreateUser = ({
@@ -225,7 +223,7 @@ const CreateUser = ({
 
                   <Button
                     variant='contained'
-                    color='success'
+                    //color='success'
                     onClick={handleBack}
                     className={classes.button}
                   >
@@ -233,7 +231,7 @@ const CreateUser = ({
                   </Button>
                   <Button
                     variant='contained'
-                    color='primary'
+                    //color='primary'
                     type='submit'
                     className={classes.button}
                   >
@@ -245,7 +243,7 @@ const CreateUser = ({
                   <Grid item xs={12} md={6} lg={6}>
                     <div
                       className={classes.avatarHead}
-                      fullWidth
+                      //fullWidth
                     >
                       Profile
                     </div>
@@ -273,7 +271,7 @@ const CreateUser = ({
                       <div>
                         <Button
                           variant='contained'
-                          color='primary'
+                          //color='primary'
                           className={classes.button}
                           onClick={handleSelectRef}
                         >
@@ -284,7 +282,6 @@ const CreateUser = ({
                           variant='contained'
                           //color='secondary'
                           className={classes.button}
-                          //color='#40c4ff'
                           onClick={handleUpload}
                         >
                           Upload
@@ -310,8 +307,8 @@ const CreateUser = ({
                         inputProps={{ name: 'rank', id: 'rank-native-helper' }}
                       >
                         <option value='' />
-                        {rankList.map(rank => {
-                          return <option value={rank}>{rank}</option>;
+                        {rankList.map((rank, id) => {
+                          return <option value={rank} key={id}>{rank}</option>;
                         })}
                       </Select>
                     </FormControl>
@@ -324,11 +321,12 @@ const CreateUser = ({
                       row
                     >
                       <FormLabel className={classes.sex}>Sex: </FormLabel>
-                      {['Male', 'Female'].map(sex => (
+                      {['Male', 'Female'].map((sex, id) => (
                         <FormControlLabel
                           value={sex}
                           control={<Radio />}
                           label={sex}
+                          key={id}
                         />
                       ))}
                     </RadioGroup>
@@ -374,9 +372,9 @@ const CreateUser = ({
                         }}
                       >
                         <option value='' />
-                        {superiorList.map(superior => {
+                        {superiorList.map((superior, id) => {
                           return (
-                            <option value={superior._id}>
+                            <option value={superior._id} key={id}>
                               {superior.name}
                             </option>
                           );

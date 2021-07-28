@@ -17,7 +17,6 @@ import {
 import { Loading } from './load';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -97,24 +96,6 @@ const HomePage = ({
     }
   };
 
-  const StyledTableCell = withStyles(theme => ({
-    head: {
-      backgroundColor: theme.palette.common.blue,
-      color: theme.palette.common.black
-    },
-    body: {
-      fontSize: 16
-    }
-  }))(TableCell);
-
-  const StyledTableRow = withStyles(theme => ({
-    root: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.background.default
-      }
-    }
-  }))(TableRow);
-
   return (
     <div>
       <AppBar position='static' color='transparent'>
@@ -162,8 +143,8 @@ const HomePage = ({
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <StyledTableCell>Profile</StyledTableCell>
-                      <StyledTableCell
+                      <TableCell>Profile</TableCell>
+                      <TableCell
                         align='right'
                         onClick={e => {
                           handleSort(e);
@@ -175,8 +156,8 @@ const HomePage = ({
                           {config.sortType === 1 && <ArrowUpwardIcon />}
                           {config.sortType === 2 && <ArrowDownwardIcon />}
                         </span>
-                      </StyledTableCell>
-                      <StyledTableCell
+                      </TableCell>
+                      <TableCell
                         align='right'
                         onClick={e => {
                           handleSort(e);
@@ -188,8 +169,8 @@ const HomePage = ({
                           {config.sortType === 3 && <ArrowUpwardIcon />}
                           {config.sortType === 4 && <ArrowDownwardIcon />}
                         </span>
-                      </StyledTableCell>
-                      <StyledTableCell
+                      </TableCell>
+                      <TableCell
                         align='right'
                         onClick={e => {
                           handleSort(e);
@@ -201,8 +182,8 @@ const HomePage = ({
                           {config.sortType === 5 && <ArrowUpwardIcon />}
                           {config.sortType === 6 && <ArrowDownwardIcon />}
                         </span>
-                      </StyledTableCell>
-                      <StyledTableCell
+                      </TableCell>
+                      <TableCell
                         align='right'
                         onClick={e => {
                           handleSort(e);
@@ -214,8 +195,8 @@ const HomePage = ({
                           {config.sortType === 7 && <ArrowUpwardIcon />}
                           {config.sortType === 8 && <ArrowDownwardIcon />}
                         </span>
-                      </StyledTableCell>
-                      <StyledTableCell
+                      </TableCell>
+                      <TableCell
                         align='right'
                         onClick={e => {
                           handleSort(e);
@@ -227,8 +208,8 @@ const HomePage = ({
                           {config.sortType === 9 && <ArrowUpwardIcon />}
                           {config.sortType === 10 && <ArrowDownwardIcon />}
                         </span>
-                      </StyledTableCell>
-                      <StyledTableCell
+                      </TableCell>
+                      <TableCell
                         align='right'
                         onClick={e => {
                           handleSort(e);
@@ -240,8 +221,8 @@ const HomePage = ({
                           {config.sortType === 11 && <ArrowUpwardIcon />}
                           {config.sortType === 12 && <ArrowDownwardIcon />}
                         </span>
-                      </StyledTableCell>
-                      <StyledTableCell
+                      </TableCell>
+                      <TableCell
                         align='right'
                         onClick={e => {
                           handleSort(e);
@@ -253,49 +234,47 @@ const HomePage = ({
                           {config.sortType === 13 && <ArrowUpwardIcon />}
                           {config.sortType === 14 && <ArrowDownwardIcon />}
                         </span>
-                      </StyledTableCell>
-                      <StyledTableCell align='right'># of D.S.</StyledTableCell>
-                      <StyledTableCell align='center'>Edit</StyledTableCell>
-                      <StyledTableCell align='center'>Delete</StyledTableCell>
+                      </TableCell>
+                      <TableCell align='right'># of D.S.</TableCell>
+                      <TableCell align='center'>Edit</TableCell>
+                      <TableCell align='center'>Delete</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {users.map(user => (
-                      <StyledTableRow key={user._id}>
-                        <StyledTableCell component='th' scope='row'>
-                          <Grid container justify='center' alignItems='center'>
+                      <TableRow key={user._id}>
+                        <TableCell component='th' scope='row'>
+                          <Grid container alignItems='center'>
                             <Avatar
-                              alt='Remy Sharp'
                               src={user.avatar}
                             />
-                            {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" className={classes.bigAvatar} /> */}
                           </Grid>
-                        </StyledTableCell>
-                        <StyledTableCell align='right'>
+                        </TableCell>
+                        <TableCell align='right'>
                           {user.name}
-                        </StyledTableCell>
-                        <StyledTableCell align='right'>
+                        </TableCell>
+                        <TableCell align='right'>
                           {user.sex}
-                        </StyledTableCell>
-                        <StyledTableCell align='right'>
+                        </TableCell>
+                        <TableCell align='right'>
                           {user.rank}
-                        </StyledTableCell>
-                        <StyledTableCell align='right'>
+                        </TableCell>
+                        <TableCell align='right'>
                           {user.startdate}
-                        </StyledTableCell>
-                        <StyledTableCell align='right'>
+                        </TableCell>
+                        <TableCell align='right'>
                           <a href={'tel: ' + user.phone}>{user.phone}</a>
-                        </StyledTableCell>
-                        <StyledTableCell align='right'>
+                        </TableCell>
+                        <TableCell align='right'>
                           <a href={'mailto: ' + user.email}>{user.email}</a>
-                        </StyledTableCell>
-                        <StyledTableCell
+                        </TableCell>
+                        <TableCell
                           align='right'
                           onClick={() => getSuperior(user.superior)}
                         >
                           {user.superiorname}
-                        </StyledTableCell>
-                        <StyledTableCell
+                        </TableCell>
+                        <TableCell
                           align='right'
                           onClick={() =>
                             getSubordinates(
@@ -305,8 +284,8 @@ const HomePage = ({
                           }
                         >
                           {user.directsubordinates.length}
-                        </StyledTableCell>
-                        <StyledTableCell align='right'>
+                        </TableCell>
+                        <TableCell align='right'>
                         <Button
                             aria-label='edit'
                             onClick={() => {
@@ -314,8 +293,8 @@ const HomePage = ({
                         }}>
                         <EditIcon />
                         </Button>
-                        </StyledTableCell>
-                        <StyledTableCell align='right'>
+                        </TableCell>
+                        <TableCell align='right'>
                           <Button
                             aria-label='delete'
                             onClick={() => {
@@ -324,8 +303,8 @@ const HomePage = ({
                           >
                             <DeleteIcon />
                           </Button>
-                        </StyledTableCell>
-                      </StyledTableRow>
+                        </TableCell>
+                      </TableRow>
                     ))}
                   </TableBody>
                 </Table>

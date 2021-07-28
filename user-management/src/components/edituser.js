@@ -40,8 +40,6 @@ const EditUser = ({
   config
 }) => {
   const id = match.params.userId;
-  console.log('this time: ', users);
-
   useEffect(() => {
     setSuperiorList(id);
     getUser(id, setUserData);
@@ -223,7 +221,6 @@ const EditUser = ({
 
                   <Button
                     variant='contained'
-                    color='success'
                     onClick={handleBack}
                     className={classes.button}
                   >
@@ -231,7 +228,6 @@ const EditUser = ({
                   </Button>
                   <Button
                     variant='contained'
-                    color='primary'
                     type='submit'
                     className={classes.button}
                   >
@@ -243,7 +239,6 @@ const EditUser = ({
                   <Grid item xs={12} md={6} lg={6}>
                     <div
                       className={classes.avatarHead}
-                      fullWidth
                     >
                       Avatar
                     </div>
@@ -271,7 +266,6 @@ const EditUser = ({
                       <div>
                         <Button
                           variant='contained'
-                          color='primary'
                           className={classes.button}
                           onClick={handleSelectRef}
                         >
@@ -307,8 +301,8 @@ const EditUser = ({
                         inputProps={{ name: 'rank', id: 'rank-native-helper' }}
                       >
                         <option value='' />
-                        {rankList.map(rank => {
-                          return <option value={rank}>{rank}</option>;
+                        {rankList.map((rank, id) => {
+                          return <option value={rank} key={id}>{rank}</option>;
                         })}
                       </Select>
                     </FormControl>
@@ -321,11 +315,12 @@ const EditUser = ({
                       row
                     >
                       <FormLabel className={classes.sex}>Sex: </FormLabel>
-                      {['Male', 'Female'].map(sex => (
+                      {['Male', 'Female'].map((sex, id) => (
                         <FormControlLabel
                           value={sex}
                           control={<Radio />}
                           label={sex}
+                          key={id}
                         />
                       ))}
                     </RadioGroup>
@@ -377,9 +372,9 @@ const EditUser = ({
                         }}
                       >
                         <option value='' />
-                        {superiorList.map(superior => {
+                        {superiorList.map((superior, id) => {
                           return (
-                            <option value={superior._id}>
+                            <option value={superior._id} key={id}>
                               {superior.name}
                             </option>
                           );

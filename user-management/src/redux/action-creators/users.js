@@ -3,7 +3,7 @@ import axios from 'axios';
 const setUserListStart = () => {
   return {
     type: 'SET_USER_LIST_START',
-    payload: { error: null, deleteError: null } // init
+    payload: { error: null, deleteError: null } 
   };
 };
 
@@ -95,7 +95,6 @@ export const setSuperiorList = id => dispatch => {
   axios
     .get(`http://localhost:5000/api/users/loopsafe/${id}`)
     .then(res => {
-      console.log(res.data);
       dispatch(setSuperiorListSuccess(res.data.data.validSuperiors));
     })
     .catch(err => dispatch(setSuperiorListError(err)));
@@ -367,7 +366,6 @@ export const getUser = (id, setUserData) => dispatch => {
   axios
     .get(`http://localhost:5000/api/users/${id}`)
     .then(res => {
-      console.log(res.data);
       const {
         avatar,
         name,

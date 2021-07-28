@@ -1,9 +1,41 @@
 const express = require('express');
 const router = express.Router();
 const UserModel = require('../models/user');
-const UserService = require('../services/user');
 const UserController = require('../controllers/user');
 
+
+// CREATE
+router.post('/', async (req, res) => {
+  try {
+    const user = await UserController.createNewUser(req.body);
+    res.status(200).json({ data: { user } });
+  } catch (err) {
+    res.status(500).json({ 'Create Failed :': err });
+  }
+});
+
+// EDIT
+router.put('/:userId', async (req, res) => {
+  try {
+    const user = await UserController.updateUser(req.params.userId, req.body);
+    res.status(200).json({ data: { user } });
+  } catch (err) {
+    res.status(500).json({ 'Update Failed:': err });
+  }
+});
+
+// DELETE
+router.delete('/:userId', async (req, res) => {
+  try {
+    const user = await UserController.deleteUser(req.params.userId);
+    res.status(200).json({ data: { user } });
+  } catch (err) {
+    res.status(500).json({ 'Delete Failed': err });
+  }
+});
+
+
+// GET ALL USERS & ID
 router.get(
   '/:pageSize/:pageNumber/:sortType/:searchText/:superiorId',
   async (req, res) => {
@@ -25,7 +57,7 @@ router.get(
       const users = await UserModel.getUsers(query);
       res.status(200).json(users);
     } catch (err) {
-      res.status(404).json({ error: 'No user found: ' + err });
+      res.status(404).json({ 'No Users: ': err });
     }
   }
 );
@@ -33,72 +65,22 @@ router.get(
 
 router.get('/:userId', async (req, res) => {
   try {
-
-    // UserModel
     const user = await UserModel.getUserById(req.params.userId);
-    res.status(200).json({
-      code: 0,
-      data: { user }
-    });
+    res.status(200).json({ data: { user } });
   } catch (err) {
-    res.status(404).json({ error: 'No user found by this id: ' + err });
+    res.status(404).json({ 'No User ID: ': err });
   }
 });
 
-// Get Valid superior choices (Loop Check)
+// LOOP CHECK
 router.get('/loopsafe/:userId', async (req, res) => {
   try {
-    // res an array
-    const validSuperiors = await UserService.getValidSuperiors(
+      const validSuperiors = await UserController.getValidSuperiors(
       req.params.userId
     );
-    res.status(200).json({
-      code: 0,
-      data: { validSuperiors }
-    });
+    res.status(200).json({ data: { validSuperiors } });
   } catch (err) {
-    res
-      .status(404)
-      .json({ error: 'No valid superiors found by this id: ' + err });
-  }
-});
-
-// Create user
-router.post('/', async (req, res) => {
-  try {
-    const user = await UserController.createNewUser(req.body);
-    res.status(200).json({
-      code: 0,
-      data: { user }
-    });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to create: ' + err });
-  }
-});
-
-// Edit user
-router.put('/:userId', async (req, res) => {
-  try {
-    const user = await UserController.updateUser(req.params.userId, req.body);
-    res.status(200).json({
-      code: 0,
-      data: { user }
-    });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to update: ' + err });
-  }
-});
-
-// Delete user
-router.delete('/:userId', async (req, res) => {
-  try {
-    const user = await UserController.deleteUser(req.params.userId);
-    res.status(200).json({
-      code: 0,
-      data: { user }
-    });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to delete' + err });
+    res.status(404).json({ 'No Valid Superiors: ': err });
   }
 });
 

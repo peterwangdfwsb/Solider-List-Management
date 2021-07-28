@@ -38,37 +38,29 @@ const UserSchema = new Schema({
   directsubordinates: [Schema.Types.ObjectId]
 });
 
-// Use mongoose paginate
+
+// DATABASE LOGIC
+
 UserSchema.plugin(mongoosePaginate);
 
 const User = mongoose.model('user', UserSchema);
 
 const getAllUsers = async () => {
-  let flow = User.find({});
-  return await flow.catch(err => {
-    console.log(err);
-    throw new Error('error getting users from db');
+  let allUsers = User.find({});
+  return await allUsers.catch(err => {
+    throw new Error('getAllUsers Errors', err);
   });
 };
 
-
-
-
-
 const getUsers = async params => {
-  const { pageSize, pageNumber, sortType, searchText, superiorId } = params;
+  const { pageSize, pageNumber, searchText, superiorId } = params;
   let regex = new RegExp(searchText, 'gim');
+
+  // FOR FRONTEND ARCHITECTURE
+
+  // FOR SEARCH PART
   let query = {
-    $or: [
-      { name: regex },
-      { rank: regex },
-      { sex: regex },
-      //{ startdate: regex },
-      { phone: regex },
-      { email: regex },
-      { superiorname: regex }
-    ]
-  };
+    $or: [ { name: regex } ] };
   if (superiorId) {
     query = {
       ...query,
@@ -76,41 +68,40 @@ const getUsers = async params => {
     };
   }
 
-  const sortOrder = [
-    {}, // 0
-    { name: 1 }, // 1
-    { name: -1 }, // 2
-    { sex: 1 }, // 3
-    { sex: -1 }, // 4
-    { rank: 1 }, // 5
-    { rank: -1 }, // 6
-    { startdate: 1 }, // 7
-    { startdate: -1 }, // 8
-    { phone: 1 }, // 9
-    { phone: -1 }, // 10
-    { email: 1 }, // 11
-    { email: -1 }, // 12
-    { superiorname: 1 }, // 13
-    { superiorname: -1 } // 14
-  ];
+  // FOR SORT PART
   const options = {
-    sort: sortOrder[sortType], 
-    lean: true,
+    sort: { name: 1 },
+    lean: true, 
     page: pageNumber,
     limit: pageSize
   };
-  let flow = User.paginate(query, options);
-  return await flow.catch(err => {
-    console.log(err);
-    throw new Error('error getting users from db');
+  let architecture = User.paginate(query, options);
+
+  return await architecture.catch(err => {
+    throw new Error('getUsers Error', err);
   });
 };
 
 const getUserById = async userId => {
   return await User.findOne({ _id: userId }).catch(err => {
-    console.log(err);
-    throw new Error(`error getting user by id: ${userId}`);
+    throw new Error(`getUserById in ${userId}`, err);
   });
+};
+
+const getSubordinates = async userId => {
+  try {
+    let sub = await getUserById(userId);
+    let subArr = sub.directsubordinates;
+    if (sub.directsubordinates.length === 0) return [];
+    for (let i = 0; i < sub.length; i++) {
+      let ds = await getSubordinates(sub[i]);
+      let dsArr = ds.directsubordinates;
+      subArr = [...subArr, ...dsArr];
+    }
+    return subArr;
+  } catch (err) {
+    throw new Error('getSubordinates Error', err);
+  }
 };
 
 const createUser = async userData => {
@@ -126,8 +117,7 @@ const createUser = async userData => {
     superiorname: userData.superiorname
   });
   return await newUser.save().catch(err => {
-    console.log(err);
-    throw new Error('error creating user');
+    throw new Error('createUser Error', err);
   });
 };
 
@@ -137,8 +127,7 @@ const addUserSubordinates = async (userId, dsId) => {
     { $addToSet: { directsubordinates: dsId } },
     { new: true }
   ).catch(err => {
-    console.log(err);
-    throw new Error('error adding user subordinates');
+    throw new Error('addUserSubordinates Error', err);
   });
 };
 
@@ -149,14 +138,12 @@ const transferUserSubordinates = async (userId, ds) => {
       $push: {
         directsubordinates: {
           $each: [...ds]
-          // $position: 0
         }
       }
     },
     { new: true }
   ).catch(err => {
-    console.log(err);
-    throw new Error('error transfering user subordinates');
+    throw new Error('transferUserSubordinates Error', err);
   });
 };
 
@@ -170,8 +157,7 @@ const deleteUserSubordinates = async (userId, dsId) => {
     },
     { new: true }
   ).catch(err => {
-    console.log(err);
-    throw new Error('error deleting user subordinates');
+    throw new Error('deleteUserSubordinates Error', err);
   });
 };
 
@@ -181,15 +167,13 @@ const deleteUserSuperior = async supId => {
     { $set: { superior: null, superiorname: null } },
     { new: true }
   ).catch(err => {
-    console.log(err);
-    throw new Error('error deleting user superior');
+    throw new Error('deleteUserSuperior Error', err);
   });
 };
 
 const deleteUserById = async userId => {
   return await User.findByIdAndDelete({ _id: userId }).catch(err => {
-    console.log(err);
-    throw new Error(`error deleting user by id: ${userId}`);
+    throw new Error(`deleteUserById Error: ${userId}`, err);
   });
 };
 
@@ -215,8 +199,7 @@ const updateUserById = async (userId, userData) => {
     },
     { new: true }
   ).catch(err => {
-    console.log(err);
-    throw new Error(`error updating user by id: ${userId}`);
+    throw new Error(`updateUserById Error: ${userId}`, err);
   });
 };
 
@@ -226,30 +209,12 @@ const updateUserSuperior = async (supId, newSupId, newSupName) => {
     { $set: { superior: newSupId, superiorname: newSupName } },
     { new: true }
   ).catch(err => {
-    console.log(err);
-    throw new Error('error updating user superior');
+    throw new Error('updateUserSuperior Error', err);
   });
 };
 
-const getSubordinates = async userId => {
-  try {
-    let rs = await getUserById(userId);
-    let rsArr = rs.directsubordinates;
-    if (rs.directsubordinates.length === 0) return [];
-    for (let i = 0; i < rs.length; i++) {
-      let ds = await getSubordinates(rs[i]);
-      let dsArr = ds.directsubordinates;
-      rsArr = [...rsArr, ...dsArr];
-    }
-    return rsArr;
-  } catch (err) {
-    console.log(err);
-    throw new Error('error geting user subordinates');
-  }
-};
 
 module.exports = {
-  model: User,
   getUsers,
   getUserById,
   createUser,
