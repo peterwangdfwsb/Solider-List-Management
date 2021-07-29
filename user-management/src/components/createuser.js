@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  createUser,
-  initUser,
-  setUserList
-} from '../redux/action-creators/users';
+import { createUser, initUser,setUserList } from '../redux/action-creators/users';
 import { Loading } from './load';
 import axios from 'axios';
 
@@ -223,7 +219,6 @@ const CreateUser = ({
 
                   <Button
                     variant='contained'
-                    //color='success'
                     onClick={handleBack}
                     className={classes.button}
                   >
@@ -231,7 +226,6 @@ const CreateUser = ({
                   </Button>
                   <Button
                     variant='contained'
-                    //color='primary'
                     type='submit'
                     className={classes.button}
                   >
@@ -243,7 +237,6 @@ const CreateUser = ({
                   <Grid item xs={12} md={6} lg={6}>
                     <div
                       className={classes.avatarHead}
-                      //fullWidth
                     >
                       Profile
                     </div>
@@ -271,7 +264,6 @@ const CreateUser = ({
                       <div>
                         <Button
                           variant='contained'
-                          //color='primary'
                           className={classes.button}
                           onClick={handleSelectRef}
                         >
@@ -280,7 +272,6 @@ const CreateUser = ({
                         
                         <Button
                           variant='contained'
-                          //color='secondary'
                           className={classes.button}
                           onClick={handleUpload}
                         >
@@ -394,7 +385,6 @@ const CreateUser = ({
 
 const mapStateToProps = state => {
   return {
-    //alertContent: state.alert.alertContent,
     createSuccess: state.createUser.createSuccess,
     isLoading: state.createUser.isLoading,
     error: state.createUser.error,
@@ -404,7 +394,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    //setAlert: alert => dispatch(setAlert(alert)),
     setUserList: config => dispatch(setUserList(config)),
     createUser: data => dispatch(createUser(data)),
     initUser: () => dispatch(initUser())

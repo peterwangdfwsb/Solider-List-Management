@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  editUser,
-  initEdit,
-  setSuperiorList
-} from '../redux/action-creators/users';
+import { editUser, initEdit, setSuperiorList } from '../redux/action-creators/users';
 import { getUser } from '../redux/action-creators/users';
 import { Loading } from './load';
 import axios from 'axios';
@@ -408,8 +404,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    editUser: (id, data, initEdit, users, config) =>
-      dispatch(editUser(id, data, initEdit, users, config)),
+    editUser: (id, data, initEdit, users, config) => dispatch(editUser(id, data, initEdit, users, config)),
     initEdit: () => dispatch(initEdit()),
     getUser: (id, setUserData) => dispatch(getUser(id, setUserData)),
     setSuperiorList: id => dispatch(setSuperiorList(id))

@@ -37,7 +37,7 @@ router.delete('/:userId', async (req, res) => {
 
 // GET ALL USERS & ID
 router.get(
-  '/:pageSize/:pageNumber/:sortType/:searchText/:superiorId',
+  '/:pageSize/:pageNumber/:searchText/:superiorId',
   async (req, res) => {
     try {
       if (req.params.searchText === '__NO_SEARCH_TEXT__') {
@@ -49,7 +49,6 @@ router.get(
       const query = {
         pageSize: req.params.pageSize,
         pageNumber: req.params.pageNumber,
-        sortType: req.params.sortType,
         searchText: req.params.searchText,
         superiorId: req.params.superiorId
       };

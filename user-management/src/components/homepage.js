@@ -1,19 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {
-  setUserList,
-  loadNextPage,
-  resetConfig
-} from '../redux/action-creators/users';
+import { setUserList, resetConfig } from '../redux/action-creators/users';
 import { connect } from 'react-redux';
-import {
-  initUser,
-  initEdit,
-  deleteUser,
-  changeSortType,
-  changeSearchText,
-  getSuperior,
-  getSubordinates
-} from '../redux/action-creators/users';
+import { initUser, initEdit, deleteUser, changeSearchText, getSuperior, getSubordinates } from '../redux/action-creators/users';
 import { Loading } from './load';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -31,34 +19,31 @@ import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+
 
 const HomePage = ({
   users,
   setUserList,
   history,
   deleteUser,
-  loadNextPage,
   isLoading,
   config,
   resetConfig,
-  changeSortType,
   changeSearchText,
   getSuperior,
   getSubordinates
 }) => {
-  const { pageSize, pageNumber } = config;
+  
+  useEffect(() => {
+    resetConfig();
+  }, []);
+  
   const [query, setQuery] = useState('');
   const handleSearch = e => {
     setQuery(e.target.value);
     changeSearchText(e.target.value);
     setUserList(config);
   };
-
-  useEffect(() => {
-    resetConfig();
-  }, []);
 
   const handleCreate = e => {
     history.push('/createuser');
@@ -82,20 +67,8 @@ const HomePage = ({
     'email',
     'superiorname'
   ];
-  const [asc, setAsc] = useState(true);
-  const handleSort = e => {
-    const typ = order.indexOf(e.target.id);
-    if (asc) {
-      setAsc(!asc);
-      changeSortType(2 * typ + 1);
-      setUserList(config);
-    } else {
-      setAsc(!asc);
-      changeSortType(2 * typ + 2);
-      setUserList(config);
-    }
-  };
 
+ 
   return (
     <div>
       <AppBar position='static' color='transparent'>
@@ -130,10 +103,7 @@ const HomePage = ({
             <Paper>
               <InfiniteScroll
                 dataLength={users.length}
-                next={() => {
-                  loadNextPage(config, users);
-                }}
-                hasMore={users.length / pageSize === pageNumber - 1}
+                hasMore={true}
                 endMessage={
                   <p style={{ textAlign: 'center' }}>
                     <b>ALL SOLDIER</b>
@@ -146,93 +116,58 @@ const HomePage = ({
                       <TableCell>Profile</TableCell>
                       <TableCell
                         align='right'
-                        onClick={e => {
-                          handleSort(e);
-                        }}
                         id='name'
                       >
                         Name
                         <span style={{ position: 'relative', top: 5 }}>
-                          {config.sortType === 1 && <ArrowUpwardIcon />}
-                          {config.sortType === 2 && <ArrowDownwardIcon />}
                         </span>
                       </TableCell>
                       <TableCell
                         align='right'
-                        onClick={e => {
-                          handleSort(e);
-                        }}
                         id='sex'
                       >
                         Sex
                         <span style={{ position: 'relative', top: 5 }}>
-                          {config.sortType === 3 && <ArrowUpwardIcon />}
-                          {config.sortType === 4 && <ArrowDownwardIcon />}
                         </span>
                       </TableCell>
                       <TableCell
                         align='right'
-                        onClick={e => {
-                          handleSort(e);
-                        }}
                         id='rank'
                       >
                         Rank
                         <span style={{ position: 'relative', top: 5 }}>
-                          {config.sortType === 5 && <ArrowUpwardIcon />}
-                          {config.sortType === 6 && <ArrowDownwardIcon />}
                         </span>
                       </TableCell>
                       <TableCell
                         align='right'
-                        onClick={e => {
-                          handleSort(e);
-                        }}
                         id='startdate'
                       >
                         Start Date
                         <span style={{ position: 'relative', top: 5 }}>
-                          {config.sortType === 7 && <ArrowUpwardIcon />}
-                          {config.sortType === 8 && <ArrowDownwardIcon />}
                         </span>
                       </TableCell>
                       <TableCell
                         align='right'
-                        onClick={e => {
-                          handleSort(e);
-                        }}
                         id='phone'
                       >
                         Phone
                         <span style={{ position: 'relative', top: 5 }}>
-                          {config.sortType === 9 && <ArrowUpwardIcon />}
-                          {config.sortType === 10 && <ArrowDownwardIcon />}
                         </span>
                       </TableCell>
                       <TableCell
                         align='right'
-                        onClick={e => {
-                          handleSort(e);
-                        }}
                         id='email'
                       >
                         Email
                         <span style={{ position: 'relative', top: 5 }}>
-                          {config.sortType === 11 && <ArrowUpwardIcon />}
-                          {config.sortType === 12 && <ArrowDownwardIcon />}
                         </span>
                       </TableCell>
                       <TableCell
                         align='right'
-                        onClick={e => {
-                          handleSort(e);
-                        }}
                         id='superiorname'
                       >
                         Superior
                         <span style={{ position: 'relative', top: 5 }}>
-                          {config.sortType === 13 && <ArrowUpwardIcon />}
-                          {config.sortType === 14 && <ArrowDownwardIcon />}
                         </span>
                       </TableCell>
                       <TableCell align='right'># of D.S.</TableCell>
@@ -333,9 +268,7 @@ const mapStateToDispatch = dispatch => {
     initUser: () => dispatch(initUser()),
     initEdit: () => dispatch(initEdit()),
     deleteUser: (id, users) => dispatch(deleteUser(id, users)),
-    loadNextPage: (config, users) => dispatch(loadNextPage(config, users)),
     resetConfig: () => dispatch(resetConfig()),
-    changeSortType: typ => dispatch(changeSortType(typ)),
     changeSearchText: query => dispatch(changeSearchText(query)),
     getSuperior: id => dispatch(getSuperior(id)),
     getSubordinates: (id, len) => dispatch(getSubordinates(id, len))

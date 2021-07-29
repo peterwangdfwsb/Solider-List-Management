@@ -36,10 +36,6 @@ const users = (state = initState, action) => {
         users: payload,
         isLoading: false
       };
-    case 'CHANGE_SORT_TYPE':
-      state.config.sortType = payload.sortType;
-      state.config.pageNumber = 1;
-      return state;
     case 'CHANGE_SEARCH_TEXT':
       state.config.searchText = payload.searchText;
       state.config.pageNumber = 1;
