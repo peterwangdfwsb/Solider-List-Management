@@ -329,7 +329,7 @@ export const setUserList = config => dispatch => {
 export const resetConfig = () => dispatch => {
   dispatch(setUserListStart());
   const config = {
-    pageSize: 10,
+    pageSize: 6,
     pageNumber: 1,
     sortType: 0,
     searchText: '__NO_SEARCH_TEXT__',
@@ -375,6 +375,18 @@ export const setSuperiorList = id => dispatch => {
       dispatch(setSuperiorListSuccess(res.data.data.validSuperiors));
     })
     .catch(err => dispatch(setSuperiorListError(err)));
+};
+
+export const infiniteScrolling = (config, users) => dispatch => {
+  const { pageSize, pageNumber, searchText, superiorId } = config;
+  axios
+    .get(
+      `http://localhost:5000/api/users/${pageSize}/${pageNumber}/${searchText}/${superiorId}`
+    )
+    .then(res => {
+      dispatch(setUserListSuccess(users.concat(res.data.docs), config));
+    })
+    .catch(err => dispatch(setUserListError(err)));
 };
 
 

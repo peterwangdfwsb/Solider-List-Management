@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { setUserList, resetConfig } from '../redux/action-creators/users';
+import { setUserList, resetConfig, infiniteScrolling } from '../redux/action-creators/users';
 import { connect } from 'react-redux';
 import { initUser, initEdit, deleteUser, changeSearchText, getSuperior, getSubordinates } from '../redux/action-creators/users';
 import { Loading } from './load';
@@ -31,12 +31,19 @@ const HomePage = ({
   resetConfig,
   changeSearchText,
   getSuperior,
-  getSubordinates
+  getSubordinates,
+  infiniteScrolling
 }) => {
+
+  const { pageSize, pageNumber, sortType, searchText, superiorId } = config;
   
   useEffect(() => {
+    initUser();
+    initEdit();
+    //setUserList(config);
     resetConfig();
   }, []);
+  
   
   const [query, setQuery] = useState('');
   const handleSearch = e => {
@@ -101,12 +108,16 @@ const HomePage = ({
         ) : (
           <div>
             <Paper>
-              <InfiniteScroll
+            <InfiniteScroll
                 dataLength={users.length}
-                hasMore={true}
+                next={() => {
+                  infiniteScrolling(config, users)
+                }}
+                hasMore={users.length / pageSize === pageNumber - 1}
+                loader={<h4>Loading...</h4>}
                 endMessage={
                   <p style={{ textAlign: 'center' }}>
-                    <b>ALL SOLDIER</b>
+                    <b>All Users</b>
                   </p>
                 }
               >
@@ -271,7 +282,8 @@ const mapStateToDispatch = dispatch => {
     resetConfig: () => dispatch(resetConfig()),
     changeSearchText: query => dispatch(changeSearchText(query)),
     getSuperior: id => dispatch(getSuperior(id)),
-    getSubordinates: (id, len) => dispatch(getSubordinates(id, len))
+    getSubordinates: (id, len) => dispatch(getSubordinates(id, len)),
+    infiniteScrolling: (config, users) => dispatch(infiniteScrolling(config, users))
   };
 };
 

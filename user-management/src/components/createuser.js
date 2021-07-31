@@ -186,11 +186,11 @@ const CreateUser = ({
 
   return (
     <div>
-      {createSuccess ? (
-        <Redirect to='/' />
-      ) : isLoading ? (
-        <Loading />
-      ) : (
+    {createSuccess ? (
+      <Redirect to='/' />
+    ) : isLoading ? (
+      <Loading />
+    ) : (
         <div>
           <main 
           className={classes.layout}
@@ -378,8 +378,8 @@ const CreateUser = ({
             </Paper>
           </main>
         </div>
-      )}
-    </div>
+        )}
+        </div>
   );
 };
 
