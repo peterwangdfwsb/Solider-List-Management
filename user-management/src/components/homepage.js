@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { setUserList, resetConfig, infiniteScrolling } from '../redux/action-creators/users';
+import { setUserList, infiniteScrolling, fetchUsers } from '../redux/action-creators/users';
 import { connect } from 'react-redux';
 import { initUser, initEdit, deleteUser, changeSearchText, getSuperior, getSubordinates } from '../redux/action-creators/users';
 import { Loading } from './load';
@@ -28,27 +28,22 @@ const HomePage = ({
   deleteUser,
   isLoading,
   config,
-  resetConfig,
   changeSearchText,
   getSuperior,
   getSubordinates,
-  infiniteScrolling
+  infiniteScrolling,
+  fetchUsers
 }) => {
-
-  const { pageSize, pageNumber, sortType, searchText, superiorId } = config;
   
   useEffect(() => {
-    initUser();
-    initEdit();
-    //setUserList(config);
-    resetConfig();
+    fetchUsers();
   }, []);
   
-  
-  const [query, setQuery] = useState('');
+  const { pageSize, pageNumber, searchText, superiorId } = config;
+  const [search, setSearch] = useState('');
   const handleSearch = e => {
-    setQuery(e.target.value);
     changeSearchText(e.target.value);
+    setSearch(e.target.value);
     setUserList(config);
   };
 
@@ -64,17 +59,6 @@ const HomePage = ({
   const handleDelete = (id, users) => {
     deleteUser(id, users);
   };
-
-  const order = [
-    'name',
-    'sex',
-    'rank',
-    'startdate',
-    'phone',
-    'email',
-    'superiorname'
-  ];
-
  
   return (
     <div>
@@ -86,13 +70,13 @@ const HomePage = ({
             <InputBase
               placeholder='SEARCH…'
               type='search'
-              value={query}
+              value={search}
               onChange={e => {
                 handleSearch(e);
               }}
             />
           <Button
-            onClick={resetConfig}
+            onClick={fetchUsers}
             >
             RESET
           </Button>
@@ -279,11 +263,12 @@ const mapStateToDispatch = dispatch => {
     initUser: () => dispatch(initUser()),
     initEdit: () => dispatch(initEdit()),
     deleteUser: (id, users) => dispatch(deleteUser(id, users)),
-    resetConfig: () => dispatch(resetConfig()),
     changeSearchText: query => dispatch(changeSearchText(query)),
     getSuperior: id => dispatch(getSuperior(id)),
     getSubordinates: (id, len) => dispatch(getSubordinates(id, len)),
-    infiniteScrolling: (config, users) => dispatch(infiniteScrolling(config, users))
+    infiniteScrolling: (config, users) => dispatch(infiniteScrolling(config, users)),
+    fetchUsers: () => dispatch(fetchUsers())
+    
   };
 };
 

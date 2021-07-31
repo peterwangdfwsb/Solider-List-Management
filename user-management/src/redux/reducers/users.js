@@ -8,7 +8,7 @@ const initState = {
   users: [],
   error: null,
   deleteError: null,
-  isLoading: false
+  isLoading: false,
 };
 
 const users = (state = initState, action) => {
