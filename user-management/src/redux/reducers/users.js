@@ -1,14 +1,9 @@
 const initState = {
-  config: {
-    pageSize: 6,
-    pageNumber: 1,
-    searchText: '__NO_SEARCH_TEXT__',
-    superiorId: '__NO_SUPERIOR_ID__'
-  },
   users: [],
   error: null,
   deleteError: null,
   isLoading: false,
+  config: { pageSize: 7, pageNumber: 1, searchText: '__NO_SEARCH_TEXT__', superiorId: '__NO_SUPERIOR_ID__' }
 };
 
 const users = (state = initState, action) => {

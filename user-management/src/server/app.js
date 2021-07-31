@@ -25,15 +25,11 @@ app.use('/api/users', users);
 app.use(express.static('./public'));
 app.use(fileUpload());
 app.post('/upload', (req, res) => {
-  if (req.files === null) {
-    return res.status(400).json({ msg: 'No file uploaded' });
-  }
-  const file = req.files.image;
-  file.mv(`${__dirname}/public/uploads/${file.name}`, err => {
+  req.files.image.mv(`${__dirname}/public/uploads/${req.files.image.name}`, err => {
     if (err) {
       return res.status(500).send(err);
     }
-    res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+    res.json({filePath: `/uploads/${req.files.image.name}` });
   });
 });
 

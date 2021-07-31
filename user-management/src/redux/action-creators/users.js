@@ -181,7 +181,7 @@ export const deleteUser = (id, users) => dispatch => {
       users = users.filter(user => user._id.toString() !== id.toString());
       dispatch(deleteUserSuccess(users)); 
       const config = {
-        pageSize: 6,
+        pageSize: 7,
         pageNumber: 1,
         sortType: 0,
         searchText: '__NO_SEARCH_TEXT__',
@@ -269,7 +269,7 @@ export const getSuperior = id => dispatch => {
   if (!id) return;
   dispatch(setUserListStart());
   const config = {
-    pageSize: 6,
+    pageSize: 7,
     pageNumber: 1,
     sortType: 0,
     searchText: '__NO_SEARCH_TEXT__',
@@ -287,7 +287,7 @@ export const getSubordinates = (id, len) => dispatch => {
   if (len === 0) return;
   dispatch(setUserListStart());
   const config = {
-    pageSize: 6,
+    pageSize: 7,
     pageNumber: 1,
     searchText: '__NO_SEARCH_TEXT__',
     superiorId: id
@@ -387,7 +387,7 @@ export const infiniteScrolling = (config, users) => dispatch => {
 export const fetchUsers = () => dispatch => {
   dispatch(setUserListStart());
   const config = {
-    pageSize: 6,
+    pageSize: 7,
     pageNumber: 1,
     sortType: 0,
     searchText: '__NO_SEARCH_TEXT__',

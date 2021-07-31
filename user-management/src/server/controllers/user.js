@@ -33,8 +33,9 @@ const createNewUser = async userData => {
   }
 };
 
-// UPDATE WITH & WITHOUT SUPERIOR
-const updateUserNoSupUpdate = async (userId, userData) => {
+// UPDATE WITH & WITHOUT SUPERIOR Method: Project 4 Video
+
+const noSuperior = async (userId, userData) => {
   try {
     return await UserModel.updateUserById(userId, userData);
   } catch (err) {
@@ -42,7 +43,7 @@ const updateUserNoSupUpdate = async (userId, userData) => {
   }
 };
 
-const updateUserNoSupToHasSup = async (userId, userData) => {
+const hasSuperior = async (userId, userData) => {
   try {
     await UserModel.addUserSubordinates(userData.superior, userId);
     return await UserModel.updateUserById(userId, userData);
@@ -51,7 +52,7 @@ const updateUserNoSupToHasSup = async (userId, userData) => {
   }
 };
 
-const updateUserHasSupToNoSup = async (userId, superiorId, userData) => {
+const superiorAtoNone = async (userId, superiorId, userData) => {
   try {
     await UserModel.deleteUserSubordinates(superiorId, userId);
     return await UserModel.updateUserById(userId, userData);
@@ -60,7 +61,7 @@ const updateUserHasSupToNoSup = async (userId, superiorId, userData) => {
   }
 };
 
-const updateUserHasSupAToHasSupB = async (userId, superiorId, userData) => {
+const superiorAtoB = async (userId, superiorId, userData) => {
   try {
     await UserModel.addUserSubordinates(userData.superior, userId);
     await UserModel.deleteUserSubordinates(superiorId, userId);
@@ -82,22 +83,22 @@ const updateUser = async (userId, userData) => {
 
     if (!user.superior) {
       if (!userData.superior) {
-        return await updateUserNoSupUpdate(userId, userData);
+        return await noSuperior(userId, userData);
       } else {
-        return await updateUserNoSupToHasSup(userId, userData);
+        return await hasSuperior(userId, userData);
       }
     } else {
       if (!userData.superior) {
-        return await updateUserHasSupToNoSup(
+        return await superiorAtoNone(
           userId,
           user.superior,
           userData
         );
       } else {
         if (user.superior.toString() === userData.superior.toString()) {
-          return await updateUserNoSupUpdate(userId, userData);
+          return await noSuperior(userId, userData);
         } else {
-            return await updateUserHasSupAToHasSupB( 
+            return await superiorAtoB( 
             userId,
             user.superior,
             userData
@@ -110,8 +111,9 @@ const updateUser = async (userId, userData) => {
   }
 };
 
-// DELETE WITH & WITHOUT SUPERIOR
-const deleteUserNoSupNoSub = async userId => {
+// DELETE WITH & WITHOUT SUPERIOR Method: Project 4 Video
+
+const noSuperior_delete = async userId => {
   try {
     return await UserModel.deleteUserById(userId);
   } catch (err) {
@@ -119,7 +121,7 @@ const deleteUserNoSupNoSub = async userId => {
   }
 };
 
-const deleteUserNoSupHasSub = async userId => {
+const hasSuperior_delete = async userId => {
   try {
     await UserModel.deleteUserSuperior(userId);
     return await UserModel.deleteUserById(userId);
@@ -128,7 +130,7 @@ const deleteUserNoSupHasSub = async userId => {
   }
 };
 
-const deleteUserHasSupNoSub = async (userId, superiorId) => {
+const superiorAtoNone_delete = async (userId, superiorId) => {
   try {
     await UserModel.deleteUserSubordinates(superiorId, userId);
     return await UserModel.deleteUserById(userId);
@@ -137,7 +139,7 @@ const deleteUserHasSupNoSub = async (userId, superiorId) => {
   }
 };
 
-const deleteUserHasSupHasSub = async (
+const superiorAtoB_delete = async (
   userId,
   superiorId,
   superiorName,
@@ -159,15 +161,15 @@ const deleteUser = async userId => {
 
     if (!user.superior) {
       if (user.directsubordinates.length === 0) {
-        return await deleteUserNoSupNoSub(userId);
+        return await noSuperior_delete(userId);
       } else {
-        return await deleteUserNoSupHasSub(userId);
+        return await hasSuperior_delete(userId);
       }
     } else {
       if (user.directsubordinates.length === 0) {
-        return await deleteUserHasSupNoSub(userId, user.superior);
+        return await superiorAtoNone_delete(userId, user.superior);
       } else {
-          return await deleteUserHasSupHasSub(
+          return await superiorAtoB_delete(
           userId,
           user.superior,
           user.superiorname,

@@ -37,6 +37,7 @@ const HomePage = ({
   
   useEffect(() => {
     fetchUsers();
+    //setUserList(config);
   }, []);
   
   const { pageSize, pageNumber, searchText, superiorId } = config;
@@ -49,6 +50,7 @@ const HomePage = ({
 
   const handleCreate = e => {
     history.push('/createuser');
+    console.log(pageNumber);
   };
 
   const handleEdit = id => {
@@ -97,7 +99,7 @@ const HomePage = ({
                 next={() => {
                   infiniteScrolling(config, users)
                 }}
-                hasMore={users.length / pageSize === pageNumber - 1}
+                hasMore={users.length / pageSize === pageNumber - 1 }
                 loader={<h4>Loading...</h4>}
                 endMessage={
                   <p style={{ textAlign: 'center' }}>
