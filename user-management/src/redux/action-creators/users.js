@@ -2,27 +2,9 @@ import axios from 'axios';
 
 
 //CREATE ACTIONS
-const createUserStart = () => {
-  return {
-    type: 'CREATE_USER_START',
-    payload: {}
-  };
-};
-
-const createUserSuccess = () => {
-  return {
-    type: 'CREATE_USER_SUCCESS'
-  };
-};
-
-const createUserError = err => {
-  return {
-    type: 'CREATE_USER_ERROR',
-    payload: { error: err }
-  };
-};
-
-
+const createUserStart = () => { return { type: 'CREATE_USER_START', payload: {} }; };
+const createUserSuccess = () => { return { type: 'CREATE_USER_SUCCESS' }; };
+const createUserError = err => { return { type: 'CREATE_USER_ERROR', payload: { error: err } }; };
 
 export const createUser = userData => dispatch => {
   dispatch(createUserStart());
@@ -55,32 +37,14 @@ export const createUser = userData => dispatch => {
 };
 
 // UPDATE ACTIONS
-const editUserStart = () => {
-  return {
-    type: 'EDIT_USER_START',
-    payload: {}
-  };
-};
-
-const editUserSuccess = () => {
-  return {
-    type: 'EDIT_USER_SUCCESS'
-  };
-};
-
-const editUserError = err => {
-  return {
-    type: 'EDIT_USER_ERROR',
-    payload: { error: err }
-  };
-};
+const editUserStart = () => { return { type: 'EDIT_USER_START', payload: {} }; };
+const editUserSuccess = () => { return { type: 'EDIT_USER_SUCCESS' }; };
+const editUserError = err => { return { type: 'EDIT_USER_ERROR', payload: { error: err } }; };
 
 export const editUser = (
   id,
   userData,
-  initEdit,
-  users,
-  configData,
+  initEdit
 ) => dispatch => {
   dispatch(editUserStart());
 
@@ -152,26 +116,9 @@ export const initUser = () => dispatch => {
 };
 
 // DELETE ACTIONS
-const deleteUserStart = () => {
-  return {
-    type: 'DELETE_USER_START',
-    payload: {}
-  };
-};
-
-const deleteUserSuccess = users => {
-  return {
-    type: 'DELETE_USER_SUCCESS',
-    payload: users
-  };
-};
-
-const deleteUserError = err => {
-  return {
-    type: 'DELETE_USER_ERROR',
-    payload: { deleteError: err }
-  };
-};
+const deleteUserStart = () => { return { type: 'DELETE_USER_START', payload: {} }; };
+const deleteUserSuccess = users => { return { type: 'DELETE_USER_SUCCESS', payload: users }; };
+const deleteUserError = err => { return { type: 'DELETE_USER_ERROR', payload: { deleteError: err } }; };
 
 export const deleteUser = (id, users) => dispatch => {
   dispatch(deleteUserStart());
@@ -202,26 +149,9 @@ export const deleteUser = (id, users) => dispatch => {
 
 
 // GET ACTIONS
-const getUserStart = () => {
-  return {
-    type: 'GET_USER_START',
-    payload: {}
-  };
-};
-
-const getUserSuccess = userData => {
-  return {
-    type: 'GET_USER_SUCCESS',
-    payload: { user: userData }
-  };
-};
-
-const getUserError = err => {
-  return {
-    type: 'GET_USER_ERROR',
-    payload: { error: err }
-  };
-};
+const getUserStart = () => { return { type: 'GET_USER_START', payload: {} }; };
+const getUserSuccess = userData => { return { type: 'GET_USER_SUCCESS', payload: { user: userData } }; };
+const getUserError = err => { return { type: 'GET_USER_ERROR', payload: { error: err } }; };
 
 export const getUser = (id, setUserData) => dispatch => {
   dispatch(getUserStart());
@@ -306,27 +236,9 @@ export const getSubordinates = (id, len) => dispatch => {
     .catch(err => dispatch(setUserListError(err)));
 };
 
-const setUserListStart = () => {
-  return {
-    type: 'SET_USER_LIST_START',
-    payload: { error: null, deleteError: null } 
-  };
-};
-
-const setUserListSuccess = (data, config) => {
-  return {
-    type: 'SET_USER_LIST_SUCCESS',
-    payload: { users: data, config }
-  };
-};
-
-const setUserListError = err => {
-  return {
-    type: 'SET_USER_LIST_ERROR',
-    payload: { error: err }
-  };
-};
-
+const setUserListStart = () => { return { type: 'SET_USER_LIST_START', payload: { error: null, deleteError: null } }; };
+const setUserListSuccess = (data, config) => { return { type: 'SET_USER_LIST_SUCCESS', payload: { users: data, config } }; };
+const setUserListError = err => { return { type: 'SET_USER_LIST_ERROR', payload: { error: err } }; };
 
 export const setUserList = config => dispatch => {
   dispatch(setUserListStart());

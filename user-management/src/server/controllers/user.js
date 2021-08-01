@@ -33,7 +33,7 @@ const createNewUser = async userData => {
   }
 };
 
-// UPDATE WITH & WITHOUT SUPERIOR Method: Project 4 Video
+// UPDATE WITH & WITHOUT SUPERIOR Method: Project 3 Video
 
 const noSuperior = async (userId, userData) => {
   try {
@@ -111,7 +111,7 @@ const updateUser = async (userId, userData) => {
   }
 };
 
-// DELETE WITH & WITHOUT SUPERIOR Method: Project 4 Video
+// DELETE WITH & WITHOUT SUPERIOR Method: Project 3 Video
 
 const noSuperior_delete = async userId => {
   try {

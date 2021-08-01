@@ -54,27 +54,17 @@ const getAllUsers = async () => {
 
 const getUsers = async params => {
   const { pageSize, pageNumber, searchText, superiorId } = params;
-  let regex = new RegExp(searchText, 'gim');
-
-  // FOR FRONTEND ARCHITECTURE
-
+  
   // FOR SEARCH PART
-  let query = {
-    $or: [ { name: regex } ] };
+  let regex = new RegExp(searchText, 'gim');
+  let query = { $or: [ { name: regex } ] };
+
   if (superiorId) {
-    query = {
-      ...query,
-      $and: [{ superior: superiorId }]
-    };
+    query = { ...query, $and: [{ superior: superiorId }]};
   }
 
   // FOR SORT PART
-  const options = {
-    sort: { name: 1 },
-    lean: true, 
-    page: pageNumber,
-    limit: pageSize
-  };
+  const options = { sort: { name: 1 }, lean: true, page: pageNumber, limit: pageSize };
   let architecture = User.paginate(query, options);
 
   return await architecture.catch(err => {
@@ -134,13 +124,7 @@ const addUserSubordinates = async (userId, dsId) => {
 const transferUserSubordinates = async (userId, ds) => {
   return await User.findOneAndUpdate(
     { _id: userId },
-    {
-      $push: {
-        directsubordinates: {
-          $each: [...ds]
-        }
-      }
-    },
+    { $push: { directsubordinates: { $each: [...ds] } } },
     { new: true }
   ).catch(err => {
     throw new Error('transferUserSubordinates Error', err);
@@ -150,11 +134,7 @@ const transferUserSubordinates = async (userId, ds) => {
 const deleteUserSubordinates = async (userId, dsId) => {
   return await User.findOneAndUpdate(
     { _id: userId },
-    {
-      $pull: {
-        directsubordinates: dsId
-      }
-    },
+    { $pull: { directsubordinates: dsId } },
     { new: true }
   ).catch(err => {
     throw new Error('deleteUserSubordinates Error', err);
@@ -184,17 +164,16 @@ const updateUserById = async (userId, userData) => {
   }
   return await User.findOneAndUpdate(
     { _id: userId },
-    {
-      $set: {
-        name: userData.name,
-        rank: userData.rank,
-        sex: userData.sex,
-        startdate: userData.startdate,
-        phone: userData.phone,
-        email: userData.email,
-        avatar: userData.avatar,
-        superior: userData.superior,
-        superiorname: userData.superiorname
+    { $set: { 
+      name: userData.name, 
+      rank: userData.rank, 
+      sex: userData.sex, 
+      startdate: userData.startdate, 
+      phone: userData.phone, 
+      email: userData.email,
+      avatar: userData.avatar,
+      superior: userData.superior,
+      superiorname: userData.superiorname
       }
     },
     { new: true }
