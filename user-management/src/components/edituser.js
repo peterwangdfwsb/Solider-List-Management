@@ -111,12 +111,7 @@ const EditUser = ({
     };
     axios
       .post('http://localhost:5000/upload', fd, config)
-      .then(res => {
-        console.log(res);
-        setUserData({
-          ...userData,
-          avatar: `http://localhost:5000/${res.data.filePath}`
-        });
+      .then(res => { setUserData({ ...userData, avatar: `http://localhost:5000/${res.data.filePath}` });
       })
       .catch(err => console.log(err));
   };
