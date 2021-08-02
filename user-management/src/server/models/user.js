@@ -53,7 +53,7 @@ const getAllUsers = async () => {
 };
 
 const getUsers = async params => {
-  const { pageSize, pageNumber, searchText, superiorId } = params;
+  const { pageSize, pageNumber, searchText, superiorId, sortDecision } = params;
   
   // FOR SEARCH PART
   let regex = new RegExp(searchText, 'gim');
@@ -64,7 +64,8 @@ const getUsers = async params => {
   }
 
   // FOR SORT PART
-  const options = { sort: { name: 1 }, lean: true, page: pageNumber, limit: pageSize };
+  const sortType = {None: {}, Up: {name: 1}, Down: {name: -1}}
+  const options = { sort: sortType[sortDecision], lean: true, page: pageNumber, limit: pageSize };
   let architecture = User.paginate(query, options);
 
   return await architecture.catch(err => {

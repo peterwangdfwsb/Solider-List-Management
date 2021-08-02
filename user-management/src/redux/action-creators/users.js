@@ -130,13 +130,13 @@ export const deleteUser = (id, users) => dispatch => {
       const config = {
         pageSize: 7,
         pageNumber: 1,
-        sortType: 0,
         searchText: '__NO_SEARCH_TEXT__',
-        superiorId: '__NO_SUPERIOR_ID__'
+        superiorId: '__NO_SUPERIOR_ID__',
+        sortDecision: 'None'
       };
       axios
         .get(
-          `http://localhost:5000/api/users/${config.pageSize}/${config.pageNumber}/${config.searchText}/${config.superiorId}`
+          `http://localhost:5000/api/users/${config.pageSize}/${config.pageNumber}/${config.searchText}/${config.superiorId}/${config.sortDecision}`
         )
         .then(res => {
           config.pageNumber++;
@@ -201,9 +201,9 @@ export const getSuperior = id => dispatch => {
   const config = {
     pageSize: 7,
     pageNumber: 1,
-    sortType: 0,
     searchText: '__NO_SEARCH_TEXT__',
-    superiorId: '__NO_SUPERIOR_ID__'
+    superiorId: '__NO_SUPERIOR_ID__',
+    sortDecision: 'None'
   };
   axios
     .get(`http://localhost:5000/api/users/${id}`)
@@ -220,13 +220,14 @@ export const getSubordinates = (id, len) => dispatch => {
     pageSize: 7,
     pageNumber: 1,
     searchText: '__NO_SEARCH_TEXT__',
-    superiorId: id
+    superiorId: id,
+    sortDecision: 'None'
   };
   axios
     .get(
       `http://localhost:5000/api/users/${config.pageSize}/${
         config.pageNumber
-      }/${config.searchText}/${config.superiorId}`
+      }/${config.searchText}/${config.superiorId}/${config.sortDecision}`
     )
     .then(res => {
       console.log('getSup: ', res.data);
@@ -242,10 +243,10 @@ const setUserListError = err => { return { type: 'SET_USER_LIST_ERROR', payload:
 
 export const setUserList = config => dispatch => {
   dispatch(setUserListStart());
-  const { pageSize, pageNumber, searchText, superiorId } = config;
+  const { pageSize, pageNumber, searchText, superiorId, sortDecision } = config;
   axios
     .get(
-      `http://localhost:5000/api/users/${pageSize}/${pageNumber}/${searchText}/${superiorId}`
+      `http://localhost:5000/api/users/${pageSize}/${pageNumber}/${searchText}/${superiorId}/${sortDecision}`
     )
     .then(res => {
       dispatch(setUserListSuccess(res.data.docs, config));
@@ -285,10 +286,10 @@ export const setSuperiorList = id => dispatch => {
 };
 
 export const infiniteScrolling = (config, users) => dispatch => {
-  const { pageSize, pageNumber, searchText, superiorId } = config;
+  const { pageSize, pageNumber, searchText, superiorId, sortDecision } = config;
   axios
     .get(
-      `http://localhost:5000/api/users/${pageSize}/${pageNumber}/${searchText}/${superiorId}`
+      `http://localhost:5000/api/users/${pageSize}/${pageNumber}/${searchText}/${superiorId}/${sortDecision}`
     )
     .then(res => {
       dispatch(setUserListSuccess(users.concat(res.data.docs), config));
@@ -301,19 +302,26 @@ export const fetchUsers = () => dispatch => {
   const config = {
     pageSize: 7,
     pageNumber: 1,
-    sortType: 0,
+    sortDecision: 'None',
     searchText: '__NO_SEARCH_TEXT__',
     superiorId: '__NO_SUPERIOR_ID__'
   };
   axios
     .get(
-      `http://localhost:5000/api/users/${config.pageSize}/${config.pageNumber}/${config.searchText}/${config.superiorId}`
+      `http://localhost:5000/api/users/${config.pageSize}/${config.pageNumber}/${config.searchText}/${config.superiorId}/${sortDecision}`
     )
     .then(res => {
       config.pageNumber++;
       dispatch(setUserListSuccess(res.data.docs, config));
     })
     .catch(err => dispatch(setUserListError(err)));
+};
+
+export const sortDecision = decision => dispatch => {
+  dispatch({
+    type: 'SORT_DECISION',
+    payload: { sortDecision: decision }
+  });
 };
 
 

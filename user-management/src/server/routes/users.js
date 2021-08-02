@@ -37,7 +37,7 @@ router.delete('/:userId', async (req, res) => {
 
 // GET ALL USERS & ID
 router.get(
-  '/:pageSize/:pageNumber/:searchText/:superiorId',
+  '/:pageSize/:pageNumber/:searchText/:superiorId/:sortDecision',
   async (req, res) => {
     try {
       if (req.params.searchText === '__NO_SEARCH_TEXT__') {
@@ -46,13 +46,13 @@ router.get(
       if (req.params.superiorId === '__NO_SUPERIOR_ID__') {
         req.params.superiorId = null;
       }
-      const query = {
-        pageSize: req.params.pageSize,
-        pageNumber: req.params.pageNumber,
-        searchText: req.params.searchText,
-        superiorId: req.params.superiorId
+      const query = { 
+        pageSize: req.params.pageSize, 
+        pageNumber: req.params.pageNumber, 
+        searchText: req.params.searchText, 
+        superiorId: req.params.superiorId,
+        sortDecision: req.params.sortDecision 
       };
-
       const users = await UserModel.getUsers(query);
       res.status(200).json(users);
     } catch (err) {

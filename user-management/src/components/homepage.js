@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { setUserList, infiniteScrolling, fetchUsers } from '../redux/action-creators/users';
 import { connect } from 'react-redux';
-import { initUser, initEdit, deleteUser, changeSearchText, getSuperior, getSubordinates } from '../redux/action-creators/users';
+import { initUser, initEdit, deleteUser, changeSearchText, getSuperior, getSubordinates, sortDecision } from '../redux/action-creators/users';
 import { Loading } from './load';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -14,6 +14,8 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import InputBase from '@material-ui/core/InputBase';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
@@ -32,7 +34,8 @@ const HomePage = ({
   getSuperior,
   getSubordinates,
   infiniteScrolling,
-  fetchUsers
+  fetchUsers,
+  sortDecision
 }) => {
   
   useEffect(() => {
@@ -61,6 +64,17 @@ const HomePage = ({
   const handleDelete = (id, users) => {
     deleteUser(id, users);
   };
+
+  const handleSortingup = () => {
+      sortDecision('Up');
+      setUserList(config);
+  };
+
+  const handleSortingdown = () => {
+    sortDecision('Down');
+    setUserList(config);
+};
+
  
   return (
     <div>
@@ -117,6 +131,8 @@ const HomePage = ({
                       >
                         Name
                         <span style={{ position: 'relative', top: 5 }}>
+                        <ArrowUpwardIcon onClick={() => { handleSortingup(); }}/>
+                        <ArrowDownwardIcon onClick={() => { handleSortingdown(); }}/>
                         </span>
                       </TableCell>
                       <TableCell
@@ -124,48 +140,36 @@ const HomePage = ({
                         id='sex'
                       >
                         Sex
-                        <span style={{ position: 'relative', top: 5 }}>
-                        </span>
                       </TableCell>
                       <TableCell
                         align='right'
                         id='rank'
                       >
                         Rank
-                        <span style={{ position: 'relative', top: 5 }}>
-                        </span>
                       </TableCell>
                       <TableCell
                         align='right'
                         id='startdate'
                       >
                         Start Date
-                        <span style={{ position: 'relative', top: 5 }}>
-                        </span>
                       </TableCell>
                       <TableCell
                         align='right'
                         id='phone'
                       >
                         Phone
-                        <span style={{ position: 'relative', top: 5 }}>
-                        </span>
                       </TableCell>
                       <TableCell
                         align='right'
                         id='email'
                       >
                         Email
-                        <span style={{ position: 'relative', top: 5 }}>
-                        </span>
                       </TableCell>
                       <TableCell
                         align='right'
                         id='superiorname'
                       >
                         Superior
-                        <span style={{ position: 'relative', top: 5 }}>
-                        </span>
                       </TableCell>
                       <TableCell align='right'># of D.S.</TableCell>
                       <TableCell align='center'>Edit</TableCell>
@@ -269,8 +273,8 @@ const mapStateToDispatch = dispatch => {
     getSuperior: id => dispatch(getSuperior(id)),
     getSubordinates: (id, len) => dispatch(getSubordinates(id, len)),
     infiniteScrolling: (config, users) => dispatch(infiniteScrolling(config, users)),
-    fetchUsers: () => dispatch(fetchUsers())
-    
+    fetchUsers: () => dispatch(fetchUsers()),
+    sortDecision: decision => dispatch(sortDecision(decision)) 
   };
 };
 

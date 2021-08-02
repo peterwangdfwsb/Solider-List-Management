@@ -30,15 +30,8 @@ const CreateUser = ({
   const inf = Number.MAX_SAFE_INTEGER;
   useEffect(
     () =>
-      setUserList({
-        pageSize: inf,
-        pageNumber: 1,
-        sortType: 0,
-        searchText: '__NO_SEARCH_TEXT__',
-        superiorId: '__NO_SUPERIOR_ID__'
-      }),
-    []
-  );
+      setUserList({ pageSize: inf, pageNumber: 1, searchText: '__NO_SEARCH_TEXT__', superiorId: '__NO_SUPERIOR_ID__'}),
+    []);
 
   const [userData, setUserData] = useState({
     avatar:
@@ -99,18 +92,12 @@ const CreateUser = ({
     const fd = new FormData();
     fd.append('image', file);
     const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+      headers: { 'Content-Type': 'multipart/form-data' }
     };
     axios
       .post('http://localhost:5000/upload', fd, config)
       .then(res => {
-        console.log(res);
-        setUserData({
-          ...userData,
-          avatar: `http://localhost:5000/${res.data.filePath}`
-        });
+        setUserData({ ...userData, avatar: `http://localhost:5000/${res.data.filePath}` });
       })
       .catch(err => console.log(err));
   };
