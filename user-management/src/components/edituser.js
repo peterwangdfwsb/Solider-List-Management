@@ -355,7 +355,7 @@ const EditUser = ({
                       </InputLabel>
                       <Select
                         native
-                        value={superior._id}
+                        value={superior}
                         onChange={handleChange}
                         inputProps={{
                           name: 'superior',

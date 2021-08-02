@@ -40,7 +40,6 @@ const HomePage = ({
   
   useEffect(() => {
     fetchUsers();
-    //setUserList(config);
   }, []);
   
   const { pageSize, pageNumber, searchText, superiorId } = config;

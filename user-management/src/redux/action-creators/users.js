@@ -302,9 +302,9 @@ export const fetchUsers = () => dispatch => {
   const config = {
     pageSize: 7,
     pageNumber: 1,
-    sortDecision: 'None',
     searchText: '__NO_SEARCH_TEXT__',
-    superiorId: '__NO_SUPERIOR_ID__'
+    superiorId: '__NO_SUPERIOR_ID__',
+    sortDecision: 'None'
   };
   axios
     .get(
