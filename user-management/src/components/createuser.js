@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { createUser, initUser,setUserList } from '../redux/action-creators/users';
+import { createUser, initUser, setUserList, uploadingImg } from '../redux/action-creators/users';
 import { Loading } from './load';
-import axios from 'axios';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -25,7 +24,8 @@ const CreateUser = ({
   createSuccess,
   isLoading,
   setUserList,
-  superiorList
+  superiorList,
+  uploadingImg
 }) => {
   const inf = Number.MAX_SAFE_INTEGER;
   useEffect(
@@ -88,19 +88,30 @@ const CreateUser = ({
     setFile(e.target.files[0]);
   };
 
+  const promise = new Promise((resolve, reject) => {
+    if (true) {
+        resolve('Stuff worked')
+    } else {
+        reject('Error, it broke')
+    }
+})
+
   const handleUpload = e => {
-    const fd = new FormData();
-    fd.append('image', file);
-    const config = {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    };
-    axios
-      .post('http://localhost:5000/upload', fd, config)
-      .then(res => {
-        setUserData({ ...userData, avatar: `http://localhost:5000/${res.data.filePath}` });
-      })
-      .catch(err => console.log(err));
-  };
+    const uploadimage = new FormData();
+    uploadimage.append('image', file);
+    console.log(file.name);
+    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+    uploadingImg(uploadimage, config);
+    promise
+    .then(() => uploadingImg(uploadimage, config))
+    .then(() => setUserData({ ...userData, avatar: `http://localhost:5000/uploads/${file.name}` }))
+    .catch(() => console.log('err'));
+    /*setTimeout(function(){
+      uploadingImg(uploadimage, config);
+      setUserData({ ...userData, avatar: `http://localhost:5000/uploads/${file.name}` })});*/
+  }
+
+  
 
   const handleSelectRef = () => {
     uploadEl.current.click();
@@ -383,7 +394,8 @@ const mapDispatchToProps = dispatch => {
   return {
     setUserList: config => dispatch(setUserList(config)),
     createUser: data => dispatch(createUser(data)),
-    initUser: () => dispatch(initUser())
+    initUser: () => dispatch(initUser()),
+    uploadingImg: (uploadimage, config) => dispatch(uploadingImg(uploadimage, config))
   };
 };
 
@@ -391,3 +403,23 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(CreateUser);
+
+
+
+
+
+
+
+/*const handleUpload = e => {
+    const uploadimage = new FormData();
+    uploadimage.append('image', file);
+    console.log(file.name);
+    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+    axios
+      .post('http://localhost:5000/upload', uploadimage, config)
+      .then(res => {
+        setUserData({ ...userData, avatar: `http://localhost:5000/${res.data.filePath}` });
+        console.log(res.data.filePath);
+      })
+      .catch(err => console.log(err));
+  };*/

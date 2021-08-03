@@ -4,7 +4,8 @@ const initState = {
   deleteError: null,
   isLoading: false,
   sortDecision: 'None',
-  config: { pageSize: 7, pageNumber: 1, searchText: '__NO_SEARCH_TEXT__', superiorId: '__NO_SUPERIOR_ID__' }
+  config: { pageSize: 7, pageNumber: 1, searchText: '__NO_SEARCH_TEXT__', superiorId: '__NO_SUPERIOR_ID__' },
+  uploadImg: false
 };
 
 const users = (state = initState, action) => {
@@ -36,10 +37,13 @@ const users = (state = initState, action) => {
       state.config.pageNumber = 1;
       return state;
 
-      case 'SORT_DECISION':
-        state.config.sortDecision = payload.sortDecision;
-        state.config.pageNumber = 1;
-        return state;
+    case 'SORT_DECISION':
+      state.config.sortDecision = payload.sortDecision;
+      state.config.pageNumber = 1;
+      return state;
+    
+    case 'UPLOAD_IMG':
+      return {...state, uploadImg: true};
 
     default:
       return state;

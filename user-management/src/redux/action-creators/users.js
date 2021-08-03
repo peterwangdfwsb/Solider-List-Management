@@ -324,4 +324,16 @@ export const sortDecision = decision => dispatch => {
   });
 };
 
+export const uploadingImg = (uploadimage, config) => dispatch => {
+  dispatch({
+    type: 'UPLOAD_IMG'
+  })
+  axios
+  .post('http://localhost:5000/upload', uploadimage, config)
+  .catch(err => console.log(err));
+}
+
+
+
+
 

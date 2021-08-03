@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { editUser, initEdit, setSuperiorList } from '../redux/action-creators/users';
+import { editUser, initEdit, setSuperiorList, uploadingImg } from '../redux/action-creators/users';
 import { getUser } from '../redux/action-creators/users';
 import { Loading } from './load';
-import axios from 'axios';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -33,7 +32,8 @@ const EditUser = ({
   setSuperiorList,
   superiorList,
   users,
-  config
+  config,
+  uploadingImg
 }) => {
   const id = match.params.userId;
   useEffect(() => {
@@ -101,20 +101,28 @@ const EditUser = ({
     setFile(e.target.files[0]);
   };
 
+  
+  const promise = new Promise((resolve, reject) => {
+    if (true) {
+        resolve('Stuff worked')
+    } else {
+        reject('Error, it broke')
+    }
+})
+
   const handleUpload = e => {
-    const fd = new FormData();
-    fd.append('image', file);
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    };
-    axios
-      .post('http://localhost:5000/upload', fd, config)
-      .then(res => { setUserData({ ...userData, avatar: `http://localhost:5000/${res.data.filePath}` });
-      })
-      .catch(err => console.log(err));
-  };
+    const uploadimage = new FormData();
+    uploadimage.append('image', file);
+    console.log(file.name);
+    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+    uploadingImg(uploadimage, config);
+    promise
+    .then(() => uploadingImg(uploadimage, config))
+    .then(() => setUserData({ ...userData, avatar: `http://localhost:5000/uploads/${file.name}` }))
+    .catch(() => console.log('err'));
+  }
+
+  
 
   const handleSelectRef = () => {
     uploadEl.current.click();
@@ -402,7 +410,8 @@ const mapDispatchToProps = dispatch => {
     editUser: (id, data, initEdit, users, config) => dispatch(editUser(id, data, initEdit, users, config)),
     initEdit: () => dispatch(initEdit()),
     getUser: (id, setUserData) => dispatch(getUser(id, setUserData)),
-    setSuperiorList: id => dispatch(setSuperiorList(id))
+    setSuperiorList: id => dispatch(setSuperiorList(id)),
+    uploadingImg: (uploadimage, config) => dispatch(uploadingImg(uploadimage, config))
   };
 };
 
@@ -410,3 +419,25 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(EditUser);
+
+
+
+
+
+
+
+
+
+/*const handleUpload = e => {
+    const uploadimage = new FormData();
+    uploadimage.append('image', file);
+    console.log(file.name);
+    const config = { headers: { 'Content-Type': 'multipart/form-data'} };
+    axios
+      .post('http://localhost:5000/upload', uploadimage, config)
+      .then(res => { 
+        setUserData({ ...userData, avatar: `http://localhost:5000/${res.data.filePath}`});
+        console.log(res.data.filePath);
+      })
+      .catch(err => console.log(err));
+  };*/
