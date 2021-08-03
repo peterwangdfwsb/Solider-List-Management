@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createUser, initUser, setUserList, uploadingImg } from '../redux/action-creators/users';
@@ -88,7 +89,7 @@ const CreateUser = ({
     setFile(e.target.files[0]);
   };
 
-  const promise = new Promise((resolve, reject) => {
+  /*const promise = new Promise((resolve, reject) => {
     if (true) {
         resolve('Stuff worked')
     } else {
@@ -105,11 +106,25 @@ const CreateUser = ({
     promise
     .then(() => uploadingImg(uploadimage, config))
     .then(() => setUserData({ ...userData, avatar: `http://localhost:5000/uploads/${file.name}` }))
-    .catch(() => console.log('err'));
+    .catch(() => console.log('err'));*/
     /*setTimeout(function(){
       uploadingImg(uploadimage, config);
-      setUserData({ ...userData, avatar: `http://localhost:5000/uploads/${file.name}` })});*/
-  }
+      setUserData({ ...userData, avatar: `http://localhost:5000/uploads/${file.name}` })});
+  }*/
+
+  const handleUpload = e => {
+    const uploadimage = new FormData();
+    uploadimage.append('image', file);
+    console.log(file.name);
+    const config = { headers: { 'Content-Type': 'multipart/form-data'} };
+    axios
+      .post('http://localhost:5000/upload', uploadimage, config)
+      .then(res => { 
+        setUserData({ ...userData, avatar: `http://localhost:5000/${res.data.filePath}`});
+        console.log(res.data.filePath);
+      })
+      .catch(err => console.log(err));
+  };
 
   
 

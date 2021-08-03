@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { editUser, initEdit, setSuperiorList, uploadingImg } from '../redux/action-creators/users';
@@ -102,7 +103,7 @@ const EditUser = ({
   };
 
   
-  const promise = new Promise((resolve, reject) => {
+  /*const promise = new Promise((resolve, reject) => {
     if (true) {
         resolve('Stuff worked')
     } else {
@@ -118,9 +119,24 @@ const EditUser = ({
     uploadingImg(uploadimage, config);
     promise
     .then(() => uploadingImg(uploadimage, config))
+    .then(() => console.log(file))
     .then(() => setUserData({ ...userData, avatar: `http://localhost:5000/uploads/${file.name}` }))
     .catch(() => console.log('err'));
-  }
+  }*/
+
+  const handleUpload = e => {
+    const uploadimage = new FormData();
+    uploadimage.append('image', file);
+    console.log(file.name);
+    const config = { headers: { 'Content-Type': 'multipart/form-data'} };
+    axios
+      .post('http://localhost:5000/upload', uploadimage, config)
+      .then(res => { 
+        setUserData({ ...userData, avatar: `http://localhost:5000/${res.data.filePath}`});
+        console.log(res.data.filePath);
+      })
+      .catch(err => console.log(err));
+  };
 
   
 
