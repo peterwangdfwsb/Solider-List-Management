@@ -39,8 +39,9 @@ const HomePage = ({
 }) => {
   
   useEffect(() => {
+    //setUserList(config);
     fetchUsers();
-  }, []);
+  },[]);
   
   const { pageSize, pageNumber, searchText, superiorId } = config;
   const [search, setSearch] = useState('');
@@ -246,7 +247,8 @@ const HomePage = ({
               </InfiniteScroll>
             </Paper>
           </div>
-        )}
+        )
+        }
       </div>
     </div>
   );

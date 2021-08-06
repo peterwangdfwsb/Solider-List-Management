@@ -35,7 +35,7 @@ router.delete('/:userId', async (req, res) => {
 });
 
 
-// GET ALL USERS & ID
+// GET ALL USERS & ID & LOOPCHECK
 router.get(
   '/:pageSize/:pageNumber/:searchText/:superiorId/:sortDecision',
   async (req, res) => {
@@ -71,16 +71,19 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
-// LOOP CHECK
-router.get('/loopsafe/:userId', async (req, res) => {
+
+router.get('/loopcheck/:userId', async (req, res) => {
+  //res.status.json('hello');
   try {
       const validSuperiors = await UserController.getValidSuperiors(
       req.params.userId
     );
     res.status(200).json({ data: { validSuperiors } });
+   
   } catch (err) {
     res.status(404).json({ 'No Valid Superiors: ': err });
   }
 });
+
 
 module.exports = router;

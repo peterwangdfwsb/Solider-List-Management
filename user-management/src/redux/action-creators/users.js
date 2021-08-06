@@ -1,4 +1,5 @@
-import axios from 'axios';
+//import axios from 'axios';
+import axios, * as others from 'axios';
 
 
 //CREATE ACTIONS
@@ -7,7 +8,7 @@ const createUserSuccess = () => { return { type: 'CREATE_USER_SUCCESS' }; };
 const createUserError = err => { return { type: 'CREATE_USER_ERROR', payload: { error: err } }; };
 
 export const createUser = userData => dispatch => {
-  dispatch(createUserStart());
+  //dispatch(createUserStart());
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -46,7 +47,7 @@ export const editUser = (
   userData,
   initEdit
 ) => dispatch => {
-  dispatch(editUserStart());
+  //dispatch(editUserStart());
 
   const config = {
     headers: {
@@ -121,7 +122,7 @@ const deleteUserSuccess = users => { return { type: 'DELETE_USER_SUCCESS', paylo
 const deleteUserError = err => { return { type: 'DELETE_USER_ERROR', payload: { deleteError: err } }; };
 
 export const deleteUser = (id, users) => dispatch => {
-  dispatch(deleteUserStart());
+  //dispatch(deleteUserStart());
   axios
     .delete(`http://localhost:5000/api/users/${id}`)
     .then(() => {
@@ -154,7 +155,7 @@ const getUserSuccess = userData => { return { type: 'GET_USER_SUCCESS', payload:
 const getUserError = err => { return { type: 'GET_USER_ERROR', payload: { error: err } }; };
 
 export const getUser = (id, setUserData) => dispatch => {
-  dispatch(getUserStart());
+  //dispatch(getUserStart());
   axios
     .get(`http://localhost:5000/api/users/${id}`)
     .then(res => {
@@ -278,7 +279,8 @@ const setSuperiorListError = err => {
 export const setSuperiorList = id => dispatch => {
   dispatch(setSuperiorListStart());
   axios
-    .get(`http://localhost:5000/api/users/loopsafe/${id}`)
+    .get(`http://localhost:5000/api/users/loopcheck/${id}`)
+    //.get(`http://localhost:5000/api/users/loopcheck`)
     .then(res => {
       dispatch(setSuperiorListSuccess(res.data.data.validSuperiors));
     })

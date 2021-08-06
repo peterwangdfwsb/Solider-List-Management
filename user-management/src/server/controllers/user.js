@@ -187,11 +187,16 @@ const getValidSuperiors = async userId => {
   try {
     const allUsers = await UserModel.getAllUsers();
     const subordinates = await UserModel.getSubordinates(userId);
+    //const test = subordinates.map(Id => await UserModel.getSubordinates(Id));
+    //console.log(test);
     const subList = subordinates.map(id => id.toString());
     const invalidList = [...subList, userId];
-    return allUsers.filter(
+    const validUsers = allUsers.filter(
       user => invalidList.indexOf(user._id.toString()) === -1
     );
+    //console.log(validUsers);
+    return validUsers;
+    //return subordinates;
   } catch (err) {
     console.log(err);
     throw new Error(err);
