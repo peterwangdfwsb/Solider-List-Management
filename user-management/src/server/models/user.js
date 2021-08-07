@@ -79,21 +79,52 @@ const getUserById = async userId => {
   });
 };
 
+
+
 const getSubordinates = async userId => {
   try {
     let sub = await getUserById(userId);
     let subArr = sub.directsubordinates;
-    if (sub.directsubordinates.length === 0) return [];
-    for (let i = 0; i < sub.length; i++) {
-      let ds = await getSubordinates(sub[i]);
-      let dsArr = ds.directsubordinates;
-      subArr = [...subArr, ...dsArr];
+    let bfs = [];
+    let bfs_1 = [];
+    
+   //if (sub.directsubordinates.length === 0) return sub;
+   for (let i = 0; i < sub.directsubordinates.length; i++) {
+        let ds = await getUserById(subArr[i]);
+        let dsArr = ds.directsubordinates;
+        subArr = [...subArr, ...dsArr];
+        bfs = [...dsArr];
+
     }
+
+    if (bfs) {
+      for (let j = 0; j < bfs.length; j++) {
+        let es = await getUserById(bfs[j]);
+        let esArr = es.directsubordinates;
+        subArr = [...subArr, ...esArr];
+        bfs_1 = [...esArr];
+      }
+    }
+
+    if (bfs_1) {
+      for (let k = 0; k < bfs_1.length; k++) {
+        let fs = await getUserById(bfs_1[k]);
+        let fsArr = fs.directsubordinates;
+        subArr = [...subArr, ...fsArr];
+      }
+
+    }
+
+
+    console.log(subArr);
+    console.log(bfs_1);
     return subArr;
   } catch (err) {
     throw new Error('getSubordinates Error', err);
   }
 };
+
+
 
 const createUser = async userData => {
   const newUser = new User({

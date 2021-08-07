@@ -1,5 +1,5 @@
-//import axios from 'axios';
-import axios, * as others from 'axios';
+import axios from 'axios';
+//import axios, * as others from 'axios';
 
 
 //CREATE ACTIONS
