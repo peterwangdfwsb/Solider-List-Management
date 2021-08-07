@@ -94,7 +94,8 @@ const EditUser = ({
     history.push('/');
   };
 
-  const rankList = ['General', 'Colonel', 'Major', 'Private'];
+  //const rankList = ['General', 'Colonel', 'Major', 'Private'];
+  const rankList = ['General', 'Colonel', 'Major', 'Private', 'Sergeant'];
 
   const [file, setFile] = useState(null);
 

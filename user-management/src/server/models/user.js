@@ -87,6 +87,10 @@ const getSubordinates = async userId => {
     let subArr = sub.directsubordinates;
     let bfs = [];
     let bfs_1 = [];
+    let bfs_2 = [];
+    let bfs_3 = [];
+    let bfs_4 = [];
+    let bfs_5 = [];
     
    //if (sub.directsubordinates.length === 0) return sub;
    for (let i = 0; i < sub.directsubordinates.length; i++) {
@@ -111,8 +115,43 @@ const getSubordinates = async userId => {
         let fs = await getUserById(bfs_1[k]);
         let fsArr = fs.directsubordinates;
         subArr = [...subArr, ...fsArr];
+        bfs_2 = [...fsArr];
       }
+    }
 
+    if (bfs_2) {
+      for (let k = 0; k < bfs_2.length; k++) {
+        let gs = await getUserById(bfs_2[k]);
+        let gsArr = gs.directsubordinates;
+        subArr = [...subArr, ...gsArr];
+        bfs_3 = [...gsArr];
+      }
+    }
+
+    if (bfs_3) {
+      for (let k = 0; k < bfs_3.length; k++) {
+        let hs = await getUserById(bfs_3[k]);
+        let hsArr = hs.directsubordinates;
+        subArr = [...subArr, ...hsArr];
+        bfs_4 = [...hsArr];
+      }
+    }
+
+    if (bfs_4) {
+      for (let k = 0; k < bfs_4.length; k++) {
+        let is = await getUserById(bfs_4[k]);
+        let isArr = is.directsubordinates;
+        subArr = [...subArr, ...isArr];
+        bfs_5 = [...isArr];
+      }
+    }
+
+    if (bfs_5) {
+      for (let k = 0; k < bfs_5.length; k++) {
+        let js = await getUserById(bfs_5[k]);
+        let jsArr = js.directsubordinates;
+        subArr = [...subArr, ...jsArr];
+      }
     }
 
 

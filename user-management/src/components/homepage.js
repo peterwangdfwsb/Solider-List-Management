@@ -114,7 +114,7 @@ const HomePage = ({
                   infiniteScrolling(config, users)
                 }}
                 hasMore={users.length / pageSize === pageNumber - 1 }
-                loader={<h4>Loading...</h4>}
+                loader={<h4>More Users...</h4>}
                 endMessage={
                   <p style={{ textAlign: 'center' }}>
                     <b>All Users</b>
